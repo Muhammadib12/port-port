@@ -7,6 +7,7 @@ import project6 from "../assets/projects/CRUD-js.png";
 import project7 from "../assets/projects/ChatApp.png";
 import project8 from "../assets/projects/Netflix2Cloning.png";
 import project9 from "../assets/projects/PersonalPortfolio.png";
+import project10 from "../assets/projects/Restaurant.png";
 
 export const HERO_CONTENT = `I am a passionate junior full stack developer with a knack for crafting robust and scalable web applications. With 1 year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies like Node.js, MySQL, and Mongoose. My goal is to leverage my expertise to create innovative solutions that drive business growth and deliver exceptional user experiences.`;
 
@@ -84,6 +85,14 @@ export const PROJECTS = [
         url: 'https://netflix-mern-clone-3ktp.onrender.com'
       },
       {
+        title: "Restaurant App Project",
+          image: project10,
+          description:
+            "This is my first Next.js and TypeScript project, a Restaurant App designed to improve my skills in building scalable and modern web applications. Through this project, I deepened my understanding of Next.js for server-side rendering, TypeScript for better type safety, and Tailwind CSS for efficient styling.               The app showcases a beautifully designed interface with smooth animations powered by Framer Motion, interactive UI elements, and a responsive layout to enhance user experience. By working on this project, I refined my skills in structuring Next.js applications, optimizing performance, and creating reusable React components.",
+          technologies: ["Next.js", "Tailwind CSS","Framer Motion"],
+          url: 'https://restaurant-ten-rho.vercel.app/'
+        },
+      {
         title: "Personal Portfolio",
           image: project9,
           description:
@@ -91,6 +100,7 @@ export const PROJECTS = [
           technologies: ["React", "Tailwind CSS","Framer Motion"],
           url: 'home'
         },
+       
 ];
 
 
