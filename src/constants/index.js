@@ -7,7 +7,7 @@ import project6 from "../assets/projects/CRUD-js.png";
 import project7 from "../assets/projects/ChatApp.png";
 import project8 from "../assets/projects/Netflix2Cloning.png";
 import project9 from "../assets/projects/PersonalPortfolio.png";
-import project10 from "../assets/projects/Restaurant.png";
+import project10 from "../assets/projects/RestaurantApp.png";
 
 export const HERO_CONTENT = `I am a passionate junior full stack developer with a knack for crafting robust and scalable web applications. With 1 year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies like Node.js, MySQL, and Mongoose. My goal is to leverage my expertise to create innovative solutions that drive business growth and deliver exceptional user experiences.`;
 
