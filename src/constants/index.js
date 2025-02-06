@@ -81,7 +81,7 @@ export const PROJECTS = [
         image: project8,
         description:
           "This website is an advanced replica of Netflix, building upon the initial project. Through this project, I gained valuable experience working with Express, Mongoose, Node.js, and React, as well as integrating RESTful APIs. I used the TMDB API to fetch movie details and display simple videos for each movie from YouTube. Additionally, I delved deeper into implementing JWT for authentication and managing cookies. I’m excited to continue improving my skills in these areas and explore them further in real-world applications.(Since I am using Render's free plan, the application may take up to half a minute to load. I kindly ask for your patience.)",
-        technologies: ["React", "CSS","Tailwind CSS","Node.js","WebSocket.io"],
+        technologies: ["React", "CSS","Tailwind CSS","Node.js"],
         url: 'https://netflix-mern-clone-3ktp.onrender.com'
       },
       {
