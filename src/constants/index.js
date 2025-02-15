@@ -9,7 +9,7 @@ import project8 from "../assets/projects/Netflix2Cloning.png";
 import project9 from "../assets/projects/PersonalPortfolio.png";
 import project10 from "../assets/projects/RestaurantApp.png";
 
-export const HERO_CONTENT = `I am a passionate junior full stack developer with a knack for crafting robust and scalable web applications. With 1 year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies like Node.js, MySQL, and Mongoose. My goal is to leverage my expertise to create innovative solutions that drive business growth and deliver exceptional user experiences.`;
+export const HERO_CONTENT = `I am a passionate junior full-stack developer with a strong ability to craft robust and scalable web applications. With over a year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies such as Node.js, MySQL, and Mongoose. Additionally, I am also a Java Spring Boot developer, expanding my expertise in building efficient and high-performance backend systems. What sets me apart is my ability to learn quickly and independently, allowing me to adapt to new technologies and frameworks with ease. My goal is to leverage my expertise to create innovative solutions that drive business growth while delivering exceptional user experiences.`;
 
 export const ABOUT_TEXT = `I began my journey in software development at Braude College, where I studied Software Practical Engineering and graduated with honors. My initial steps into the world of web development were rooted in mastering the fundamentals: HTML, CSS, JavaScript, and PHP. Over time, I honed my skills and built a strong foundation in these technologies.
 

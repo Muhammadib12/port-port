@@ -43,8 +43,13 @@ function Hero() {
               animate="visible"
               className="my-2 max-w-xl py-6 font-light tracking-tight"
             >
-              {HERO_CONTENT}
+              {HERO_CONTENT.split("Java Spring Boot developer")[0]}
+              <span className="font-bold bg-gradient-to-r from-pink-300 via-slate-500 to-green-400 bg-clip-text text-transparent tracking-tight">
+                Java Spring Boot Developer
+              </span>
+              {HERO_CONTENT.split("Java Spring Boot developer")[1]}
             </motion.p>
+
           </div>
         </div>
 
