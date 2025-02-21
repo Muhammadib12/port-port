@@ -8,7 +8,7 @@ import project7 from "../assets/projects/ChatApp.png";
 import project8 from "../assets/projects/Netflix2Cloning.png";
 import project9 from "../assets/projects/PersonalPortfolio.png";
 import project10 from "../assets/projects/RestaurantApp.png";
-
+import project11 from '../assets/projects/TodoAppp.png';
 export const HERO_CONTENT = `I am a passionate junior full-stack developer with a strong ability to craft robust and scalable web applications. With over a year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies such as Node.js, MySQL, and Mongoose. Additionally, I am also a Java Spring Boot developer, expanding my expertise in building efficient and high-performance backend systems. What sets me apart is my ability to learn quickly and independently, allowing me to adapt to new technologies and frameworks with ease. My goal is to leverage my expertise to create innovative solutions that drive business growth while delivering exceptional user experiences.`;
 
 export const ABOUT_TEXT = `I began my journey in software development at Braude College, where I studied Software Practical Engineering and graduated with honors. My initial steps into the world of web development were rooted in mastering the fundamentals: HTML, CSS, JavaScript, and PHP. Over time, I honed my skills and built a strong foundation in these technologies.
@@ -92,6 +92,14 @@ export const PROJECTS = [
           technologies: ["Next.js", "Tailwind CSS","Framer Motion"],
           url: 'https://restaurant-ten-rho.vercel.app/'
         },
+        {
+          title: "TODO APP",
+            image: project11,
+            description:
+              "This TODO application is a project I built to strengthen my backend development skills. I developed the RESTful APIs using Node.js and Express.js, ensuring efficient request handling and seamless data management. The database is powered by SQLite, providing a lightweight yet effective solution for storing and managing tasks.Through this project, I refined my understanding of API architecture, database interactions, and authentication processes using JWT. It also helped me optimize backend performance and enhance error handling techniques. This project serves as a key milestone in my journey toward mastering backend development.",
+            technologies: ["Node.js", "Express","JWT","SQLite","HTML","CSS","JavaScript"],
+            url: 'https://todo-app-1-qbhh.onrender.com/'
+          },
       {
         title: "Personal Portfolio",
           image: project9,
@@ -100,6 +108,7 @@ export const PROJECTS = [
           technologies: ["React", "Tailwind CSS","Framer Motion"],
           url: 'home'
         },
+     
        
 ];
 
