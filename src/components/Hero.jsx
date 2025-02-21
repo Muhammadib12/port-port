@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { HERO_CONTENT } from '../constants';
 import Muhammad from '../assets/Muhammad.png';
 import { motion } from 'framer-motion';
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
 const container = (delay) => ({
   hidden: { x: -100, opacity: 0 },
@@ -16,6 +17,29 @@ const container = (delay) => ({
 });
 
 function Hero() {
+  // 🔹 حالة لتحديد متى يبدأ التايب رايتر
+  const [startTyping, setStartTyping] = useState(false);
+
+  // 🔹 تأخير بدء التايب رايتر بعد 0.5 ثانية من ظهور العنصر
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStartTyping(true);
+    }, 500); // 0.5 ثانية
+
+    return () => clearTimeout(timer); // تنظيف التايمر عند إلغاء المكون
+  }, []);
+
+  // 🔹 تفعيل التايب رايتر فقط عندما يكون `startTyping` = true
+  const [text] = useTypewriter({
+    words: startTyping
+      ? ['Full Stack Developer', 'React Developer', 'NodeJS Developer']
+      : [''], // إذا لم يبدأ بعد، لا تظهر أي نص
+    loop: true,
+    typeSpeed: 200,
+    deleteSpeed: 50,
+    delaySpeed: 2000,
+  });
+
   return (
     <div className="border-b border-neutral-900 pb-4 lg:mb-35">
       <div className="flex flex-wrap justify-between lg:justify-between items-center">
@@ -29,27 +53,26 @@ function Hero() {
             >
               Muhammad Ibrahim
             </motion.h1>
+
+            {/* 🔹 التأكد من أن التأثير يبدأ فقط بعد 0.5 ثانية */}
             <motion.span
               variants={container(0.5)}
               initial="hidden"
               animate="visible"
               className="bg-gradient-to-r from-pink-300 via-slate-500 to-purple-400 bg-clip-text text-3xl tracking-tight text-transparent"
             >
-              Full Stack Developer
+              {text}
+              <Cursor cursorColor="#f43f5e" />
             </motion.span>
+
             <motion.p
               variants={container(1)}
               initial="hidden"
               animate="visible"
               className="my-2 max-w-xl py-6 font-light tracking-tight"
             >
-              {HERO_CONTENT.split("Java Spring Boot developer")[0]}
-              <span className="font-bold bg-gradient-to-r from-pink-300 via-slate-500 to-green-400 bg-clip-text text-transparent tracking-tight">
-                Java Spring Boot Developer
-              </span>
-              {HERO_CONTENT.split("Java Spring Boot developer")[1]}
+              {HERO_CONTENT}
             </motion.p>
-
           </div>
         </div>
 
