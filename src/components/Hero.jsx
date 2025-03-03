@@ -17,23 +17,22 @@ const container = (delay) => ({
 });
 
 function Hero() {
-  // 🔹 حالة لتحديد متى يبدأ التايب رايتر
+
   const [startTyping, setStartTyping] = useState(false);
 
-  // 🔹 تأخير بدء التايب رايتر بعد 0.5 ثانية من ظهور العنصر
+ 
   useEffect(() => {
     const timer = setTimeout(() => {
       setStartTyping(true);
     }, 500); // 0.5 ثانية
 
-    return () => clearTimeout(timer); // تنظيف التايمر عند إلغاء المكون
+    return () => clearTimeout(timer); 
   }, []);
 
-  // 🔹 تفعيل التايب رايتر فقط عندما يكون `startTyping` = true
   const [text] = useTypewriter({
     words: startTyping
       ? ['Full Stack Developer', 'React Developer', 'NodeJS Developer']
-      : [''], // إذا لم يبدأ بعد، لا تظهر أي نص
+      : [''], 
     loop: true,
     typeSpeed: 200,
     deleteSpeed: 50,
