@@ -5,7 +5,7 @@ import RecomandationPDF from "../assets/pdfs/Recomandation.pdf";
 
 function Recomanded() {
   return (
-    <div className="border-b border-neutral-900 pb-10 lg:mb-35 flex flex-col  gap-20 ">
+    <div className="border-b border-neutral-900 pb-10 lg:mb-35 flex flex-col  gap-20 mt-20">
       <h1 className="text-center text-3xl font-semibold">Recomndation</h1>
       <motion.div
         initial={{ opacity: 0, y: 50 }}
