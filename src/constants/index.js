@@ -20,6 +20,7 @@ I am eager to continue growing professionally, gaining practical experience, and
 
 export const PROJECTS = [
   {
+    id: 1,
     title: "Cloning Netflix - First Project",
     image: project1,
     description:
@@ -28,6 +29,7 @@ export const PROJECTS = [
     url: "https://braudeflix.com/",
   },
   {
+    id: 2,
     title: "Zad Collage Tarshiha",
     image: project2,
     description:
@@ -36,6 +38,7 @@ export const PROJECTS = [
     url: "https://zadcollage.com/",
   },
   {
+    id: 3,
     title: "Portfolio Website",
     image: project3,
     description:
@@ -44,6 +47,7 @@ export const PROJECTS = [
     url: "https://muhammadib12.github.io/portfolio2-cloning/",
   },
   {
+    id: 4,
     title: "Portfolio2 Cloning Website,",
     image: project4,
     description:
@@ -52,6 +56,7 @@ export const PROJECTS = [
     url: "https://muhammadib12.github.io/Clone-of-Brittany-Chaing/",
   },
   {
+    id: 5,
     title: "Google Cloning, (SIMPLE)",
     image: project5,
     description:
@@ -60,6 +65,7 @@ export const PROJECTS = [
     url: "https://muhammadib12.github.io/google-clone/",
   },
   {
+    id: 6,
     title: "CRUD JS Project",
     image: project6,
     description:
@@ -68,6 +74,7 @@ export const PROJECTS = [
     url: "https://muhammadib12.github.io/CRUD-JS-PROJECT/",
   },
   {
+    id: 7,
     title: "Simple Chat App",
     image: project7,
     description:
@@ -76,6 +83,7 @@ export const PROJECTS = [
     url: "https://simple-chat-react-app.onrender.com/",
   },
   {
+    id: 8,
     title: "Advanced Cloning Netflix",
     image: project8,
     description:
@@ -84,6 +92,7 @@ export const PROJECTS = [
     url: "https://netflix-mern-clone-3ktp.onrender.com",
   },
   {
+    id: 9,
     title: "Restaurant App Project",
     image: project10,
     description:
@@ -92,6 +101,7 @@ export const PROJECTS = [
     url: "https://restaurant-ten-rho.vercel.app/",
   },
   {
+    id: 10,
     title: "TODO APP",
     image: project11,
     description:
@@ -108,6 +118,7 @@ export const PROJECTS = [
     url: "https://todo-app-1-qbhh.onrender.com/",
   },
   {
+    id: 11,
     title: "Advanced Chat App",
     image: project12,
     description:
@@ -126,6 +137,7 @@ export const PROJECTS = [
     url: "https://advanced-chat-app-en7d.onrender.com/login",
   },
   {
+    id: 12,
     title: "Personal Portfolio",
     image: project9,
     description:

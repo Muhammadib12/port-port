@@ -20,7 +20,6 @@ function Recomanded() {
         <p className="text-neutral-400 text-sm my-2">
           Click below to view or download the document.
         </p>
-
         <div className="flex justify-center space-x-4 mt-4">
           {/* زر فتح الملف في صفحة جديدة */}
           <a
@@ -42,7 +41,7 @@ function Recomanded() {
             <FileText size={16} className="mr-2" />
             Download
           </a>
-        </div>
+        </div>{" "}
       </motion.div>
     </div>
   );
