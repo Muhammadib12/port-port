@@ -10,6 +10,7 @@ import project9 from "../assets/projects/PersonalPortfolio.png";
 import project10 from "../assets/projects/RestaurantApp.png";
 import project11 from "../assets/projects/Todoappp.png";
 import project12 from "../assets/projects/advancedChat.png";
+import project13 from "../assets/projects/icspho.jpg";
 export const HERO_CONTENT = `I am a passionate junior full-stack developer with a strong ability to craft robust and scalable web applications. With over a year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies such as Node.js, MySQL, and Mongoose. Additionally, I am also a Java Spring Boot developer, expanding my expertise in building efficient and high-performance backend systems. What sets me apart is my ability to learn quickly and independently, allowing me to adapt to new technologies and frameworks with ease. My goal is to leverage my expertise to create innovative solutions that drive business growth while delivering exceptional user experiences.`;
 
 export const ABOUT_TEXT = `I began my journey in software development at Braude College, where I studied Software Practical Engineering and graduated with honors. My initial steps into the world of web development were rooted in mastering the fundamentals: HTML, CSS, JavaScript, and PHP. Over time, I honed my skills and built a strong foundation in these technologies.
@@ -19,6 +20,53 @@ As my passion for web development grew, I advanced into more complex and dynamic
 I am eager to continue growing professionally, gaining practical experience, and collaborating with a dynamic team to develop cutting-edge user interfaces and innovative solutions. I thrive on challenges, value teamwork, and am committed to delivering impactful results in the field of web development.`;
 
 export const PROJECTS = [
+  {
+    id: 13,
+    title: "Nadlan App-rent",
+    image: project13,
+    description:
+      "ICS Nadlan is a comprehensive real estate management platform designed to help users effortlessly search for apartments, houses, or rooms for rent or sale. Built with a powerful admin dashboard, the website provides both users and administrators with intuitive tools to manage and explore property listings.",
+    technologies: [
+      "React",
+      "CSS Module",
+      "Redux",
+      "MongoDB",
+      "Node.js",
+      "Express",
+      "JWT",
+      "lucide-ract",
+      "react-toast"
+    ],
+    url: "https://frontend-ics-nadlan.vercel.app/",
+  },
+  {
+    id: 11,
+    title: "Advanced Chat App",
+    image: project12,
+    description:
+      "This is an advanced chat application that I developed using modern web technologies. Through this project, I gained extensive experience in real-time communication with WebSocket.io, authentication and security using JWT, and efficient state management with Zustand. Additionally, I improved my skills in backend development with Node.js and Express, handling media uploads with Cloudinary, and working with MongoDB for database management. This project was a significant step in advancing my knowledge of full-stack development, helping me refine both frontend and backend expertise. (Since I am using Render's free plan, the application may take up to half a minute to load. I kindly ask for your patience.)",
+    technologies: [
+      "React",
+      "Tailwind CSS",
+      "Zustand",
+      "MongoDB",
+      "Cloudinary",
+      "Node.js",
+      "Express",
+      "JWT",
+      "WebSocket.io",
+    ],
+    url: "https://advanced-chat-app-en7d.onrender.com/login",
+  },
+  {
+    id: 12,
+    title: "Personal Portfolio",
+    image: project9,
+    description:
+      "This website is my personal portfolio, the one you are currently exploring. While building it, I learned new skills, including using Framer Motion in React to create animations and further enhancing my expertise in Tailwind CSS. It also allowed me to refine various aspects of web development and design, making this project a significant step in my learning journey.",
+    technologies: ["React", "Tailwind CSS", "Framer Motion"],
+    url: "home",
+  },
   {
     id: 1,
     title: "Cloning Netflix - First Project",
@@ -116,35 +164,8 @@ export const PROJECTS = [
       "JavaScript",
     ],
     url: "https://todo-app-1-qbhh.onrender.com/",
-  },
-  {
-    id: 11,
-    title: "Advanced Chat App",
-    image: project12,
-    description:
-      "This is an advanced chat application that I developed using modern web technologies. Through this project, I gained extensive experience in real-time communication with WebSocket.io, authentication and security using JWT, and efficient state management with Zustand. Additionally, I improved my skills in backend development with Node.js and Express, handling media uploads with Cloudinary, and working with MongoDB for database management. This project was a significant step in advancing my knowledge of full-stack development, helping me refine both frontend and backend expertise. (Since I am using Render's free plan, the application may take up to half a minute to load. I kindly ask for your patience.)",
-    technologies: [
-      "React",
-      "Tailwind CSS",
-      "Zustand",
-      "MongoDB",
-      "Cloudinary",
-      "Node.js",
-      "Express",
-      "JWT",
-      "WebSocket.io",
-    ],
-    url: "https://advanced-chat-app-en7d.onrender.com/login",
-  },
-  {
-    id: 12,
-    title: "Personal Portfolio",
-    image: project9,
-    description:
-      "This website is my personal portfolio, the one you are currently exploring. While building it, I learned new skills, including using Framer Motion in React to create animations and further enhancing my expertise in Tailwind CSS. It also allowed me to refine various aspects of web development and design, making this project a significant step in my learning journey.",
-    technologies: ["React", "Tailwind CSS", "Framer Motion"],
-    url: "home",
-  },
+  }
+
 ];
 
 export const CONTACT = {
