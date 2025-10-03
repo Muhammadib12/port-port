@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -7,8 +7,27 @@ import Technologies from "./components/Technologies";
 import Projects from "./components/Projects.jsx";
 import Contact from "./components/Contact.jsx";
 import Recomanded from "./components/Recomanded.jsx";
-
+const API_BASE = "http://localhost:5001";
 function App() {
+  useEffect(() => {
+    const url = new URL("/api/track", API_BASE);
+    url.searchParams.set(
+      "path",
+      window.location.pathname + window.location.search
+    );
+    url.searchParams.set("ref", document.referrer || "-");
+    url.searchParams.set("ua", navigator.userAgent || "-");
+
+    // طلب خفيف؛ keepalive حتى لو أغلق المستخدم التبويب بسرعة
+    const res = fetch(url.toString(), {
+      method: "GET",
+      mode: "cors",
+      keepalive: true,
+      cache: "no-store",
+    }).catch(() => {});
+    console.log(res);
+  }, []);
+
   return (
     <div className="overflow-x-hidden  text-neutral-300 antialiased selection:bg-green-300 selection:text-black">
       <div className="fixed top-0 -z-10 h-full w-full">
