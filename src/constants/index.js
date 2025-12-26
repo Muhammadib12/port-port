@@ -11,15 +11,40 @@ import project10 from "../assets/projects/RestaurantApp.png";
 import project11 from "../assets/projects/Todoappp.png";
 import project12 from "../assets/projects/advancedChat.png";
 import project13 from "../assets/projects/icspho.jpg";
-export const HERO_CONTENT = `I am a passionate junior full-stack developer with a strong ability to craft robust and scalable web applications. With over a year of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies such as Node.js, MySQL, and Mongoose. Additionally, I am also a Java Spring Boot developer, expanding my expertise in building efficient and high-performance backend systems. What sets me apart is my ability to learn quickly and independently, allowing me to adapt to new technologies and frameworks with ease. My goal is to leverage my expertise to create innovative solutions that drive business growth while delivering exceptional user experiences.`;
+import project14 from "../assets/projects/math4uo.png";
+export const HERO_CONTENT = `I’m a full-stack developer with 2–3 years of hands-on experience building robust, scalable web applications. I’ve delivered multiple real-world projects, including production websites, and gained strong startup experience at SPA Code. I specialize in modern front-end development with React.js and powerful back-end systems using Node.js/Express, TypeScript, MongoDB, and SQL. I’m a fast learner who loves shipping clean, maintainable solutions that deliver real business value and great user experiences.`;
 
-export const ABOUT_TEXT = `I began my journey in software development at Braude College, where I studied Software Practical Engineering and graduated with honors. My initial steps into the world of web development were rooted in mastering the fundamentals: HTML, CSS, JavaScript, and PHP. Over time, I honed my skills and built a strong foundation in these technologies.
+export const ABOUT_TEXT = `I studied Software Practical Engineering at Braude College and graduated with honors. Over the past 2–3 years, I’ve built and shipped multiple full-stack web projects, including production-ready websites, strengthening my skills in JavaScript/TypeScript, React, Node.js/Express, MongoDB, and SQL. I gained valuable startup experience at SPA Code, working in a fast-paced environment. I also completed several intensive full-stack courses on Udemy and at ICS College. I’m passionate about building high-quality products, collaborating with teams, and continuously improving my engineering skills.`;
 
-As my passion for web development grew, I advanced into more complex and dynamic technologies such as React, Node.js, Mongoose, and Express. Currently, I am expanding my expertise by learning React and Next.js to further enhance my skills and create modern, efficient web applications.
 
-I am eager to continue growing professionally, gaining practical experience, and collaborating with a dynamic team to develop cutting-edge user interfaces and innovative solutions. I thrive on challenges, value teamwork, and am committed to delivering impactful results in the field of web development.`;
 
 export const PROJECTS = [
+  {
+    id: 14,
+    title: "Math4uo",
+    image: project14,
+    description:
+    "Math4U is a comprehensive online mathematics learning platform designed to help students master high-school math through structured courses, clear video lessons, and organized learning paths. Built with a powerful admin dashboard, the platform gives students an intuitive experience to explore courses, track their progress, and access learning resources, while enabling administrators to manage courses, lectures, students, and subscriptions efficiently within a secure, real-world system."
+    technologies: [
+      "React",
+      "TyprScript",
+      "CSS Module",
+      "Redux",
+      "Tailwind CSS",
+      "lucide-ract",
+      "react-toast",
+      "RTK Query",
+      "Web Socket",
+      "MongoDB",
+      "Node.js",
+      "Express",
+      "JWT",
+      "S3",
+      "Vimeo",
+      "ZOHO MAIL"
+    ],
+    url: "https://math4uo.com",
+  },
   {
     id: 13,
     title: "Nadlan App-rent",
