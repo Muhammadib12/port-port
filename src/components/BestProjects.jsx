@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ExternalLink, Star } from "lucide-react";
 
 // IDs of the best projects in display order
-const BEST_IDS = [17, 16, 15, 14];
+const BEST_IDS = [18, 17, 16, 15, 14];
 
 const best = BEST_IDS.map((id) => PROJECTS.find((p) => p.id === id)).filter(Boolean);
 

@@ -76,93 +76,76 @@ function Recomanded() {
       {/* ── Decorative document background ── */}
       <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
 
-        {/* Parchment base */}
+        {/* Parchment glow */}
         <div style={{
           position: "absolute", inset: 0,
-          background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,215,0,0.04) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,215,0,0.07) 0%, transparent 70%)",
         }} />
 
-        {/* Horizontal text lines (document feel) */}
+        {/* Horizontal text lines */}
         {Array.from({ length: 14 }).map((_, i) => (
           <div key={i} style={{
             position: "absolute",
             left: "10%", right: "10%",
             top: `${18 + i * 5}%`,
             height: 1,
-            background: `rgba(255,215,0,${i % 3 === 0 ? 0.07 : 0.03})`,
+            background: `rgba(255,215,0,${i % 3 === 0 ? 0.12 : 0.05})`,
             borderRadius: 1,
           }} />
         ))}
 
-        {/* Big faint seal — center */}
+        {/* LEFT — big document ghost */}
         <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 260, height: 260,
+          position: "absolute", top: "50%", left: "6%",
+          transform: "translateY(-50%) rotate(-8deg)",
+          width: 140, height: 180,
+          border: "1px solid rgba(255,215,0,0.12)",
+          borderRadius: 6,
+          background: "rgba(255,215,0,0.02)",
+          opacity: 0.9,
+        }}>
+          {[30, 45, 60, 75, 90, 105, 120, 135].map((y, i) => (
+            <div key={i} style={{ position: "absolute", left: 14, right: 14, top: y, height: 1, background: `rgba(255,215,0,${i % 2 === 0 ? 0.18 : 0.1})` }} />
+          ))}
+          <div style={{ position: "absolute", top: 12, left: "50%", transform: "translateX(-50%)", width: 36, height: 36, borderRadius: "50%", border: "1px solid rgba(255,215,0,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: "1rem", color: "rgba(255,215,0,0.35)" }}>✦</span>
+          </div>
+        </div>
+
+        {/* RIGHT — big seal */}
+        <div style={{
+          position: "absolute", top: "50%", right: "5%",
+          transform: "translateY(-50%)",
+          width: 160, height: 160,
           borderRadius: "50%",
-          border: "2px solid rgba(255,215,0,0.06)",
-          boxShadow: "0 0 0 10px rgba(255,215,0,0.025), 0 0 0 22px rgba(255,215,0,0.015)",
+          border: "1.5px solid rgba(255,215,0,0.15)",
+          boxShadow: "0 0 0 12px rgba(255,215,0,0.04), 0 0 0 26px rgba(255,215,0,0.02)",
           display: "flex", alignItems: "center", justifyContent: "center",
         }}>
-          {/* Inner circle */}
-          <div style={{
-            width: 180, height: 180, borderRadius: "50%",
-            border: "1px solid rgba(255,215,0,0.05)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            {/* Star burst lines */}
+          <div style={{ width: 110, height: 110, borderRadius: "50%", border: "1px solid rgba(255,215,0,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 2 }}>
             {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} style={{
-                position: "absolute",
-                width: 90, height: 1,
-                background: "rgba(255,215,0,0.05)",
-                transformOrigin: "left center",
-                transform: `rotate(${i * 30}deg)`,
-                left: "50%", top: "50%",
-              }} />
+              <div key={i} style={{ position: "absolute", width: 55, height: 1, background: "rgba(255,215,0,0.07)", transformOrigin: "left center", transform: `rotate(${i * 30}deg)`, left: "50%", top: "50%" }} />
             ))}
-            {/* Center emblem text */}
-            <div style={{
-              fontFamily: "monospace", textAlign: "center", zIndex: 1,
-              color: "rgba(255,215,0,0.07)", lineHeight: 1.4, userSelect: "none",
-            }}>
-              <div style={{ fontSize: "0.6rem", letterSpacing: "0.3em" }}>OFFICIAL</div>
-              <div style={{ fontSize: "0.9rem", fontWeight: "bold", letterSpacing: "0.2em" }}>✦</div>
-              <div style={{ fontSize: "0.55rem", letterSpacing: "0.25em" }}>RECOMMENDATION</div>
-            </div>
+            <span style={{ fontFamily: "monospace", fontSize: "0.5rem", color: "rgba(255,215,0,0.2)", letterSpacing: "0.2em", zIndex: 1 }}>OFFICIAL</span>
+            <span style={{ fontSize: "1.1rem", color: "rgba(255,215,0,0.3)", zIndex: 1 }}>✦</span>
+            <span style={{ fontFamily: "monospace", fontSize: "0.45rem", color: "rgba(255,215,0,0.18)", letterSpacing: "0.15em", zIndex: 1 }}>CERTIFIED</span>
           </div>
         </div>
 
-        {/* Top-left corner ornament */}
-        <div style={{ position: "absolute", top: 24, left: 40 }}>
-          <div style={{ width: 50, height: 50, border: "1px solid rgba(255,215,0,0.08)", borderRadius: "50%", position: "relative" }}>
-            <div style={{ position: "absolute", inset: 6, border: "1px solid rgba(255,215,0,0.05)", borderRadius: "50%" }} />
-          </div>
-        </div>
-        {/* Top-right corner ornament */}
-        <div style={{ position: "absolute", top: 24, right: 40 }}>
-          <div style={{ width: 50, height: 50, border: "1px solid rgba(255,215,0,0.08)", borderRadius: "50%", position: "relative" }}>
-            <div style={{ position: "absolute", inset: 6, border: "1px solid rgba(255,215,0,0.05)", borderRadius: "50%" }} />
-          </div>
+        {/* Corner ornaments */}
+        {[{top:20,left:20},{top:20,right:20},{bottom:20,left:20},{bottom:20,right:20}].map((s,i) => (
+          <div key={i} style={{ position: "absolute", width: 40, height: 40, border: "1px solid rgba(255,215,0,0.12)", borderRadius: "50%", ...s }} />
+        ))}
+
+        {/* Signature bottom */}
+        <div style={{ position: "absolute", bottom: "10%", left: "50%", transform: "translateX(-50%)", textAlign: "center" }}>
+          <div style={{ width: 100, height: 1, background: "rgba(255,215,0,0.15)", margin: "0 auto" }} />
+          <div style={{ fontFamily: "monospace", fontSize: "0.48rem", color: "rgba(255,215,0,0.15)", letterSpacing: "0.25em", marginTop: 4 }}>SIGNATURE</div>
         </div>
 
-        {/* Signature line — bottom center */}
-        <div style={{ position: "absolute", bottom: "14%", left: "50%", transform: "translateX(-50%)", textAlign: "center" }}>
-          <div style={{ width: 120, height: 1, background: "rgba(255,215,0,0.08)", margin: "0 auto" }} />
-          <div style={{ fontFamily: "monospace", fontSize: "0.5rem", color: "rgba(255,215,0,0.06)", letterSpacing: "0.25em", marginTop: 4 }}>
-            SIGNATURE
-          </div>
-        </div>
-
-        {/* Side gradient fades */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to right, rgba(5,5,5,0.8) 0%, transparent 25%, transparent 75%, rgba(5,5,5,0.8) 100%)",
-        }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to bottom, rgba(5,5,5,0.6) 0%, transparent 20%, transparent 80%, rgba(5,5,5,0.6) 100%)",
-        }} />
+        {/* Fades */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(5,5,5,0.55) 0%, transparent 22%, transparent 78%, rgba(5,5,5,0.55) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(5,5,5,0.55) 0%, transparent 18%, transparent 82%, rgba(5,5,5,0.55) 100%)" }} />
       </div>
 
       {/* All real content sits above z:1 */}

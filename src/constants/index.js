@@ -1,3 +1,4 @@
+import nextndesign from "../assets/projects/nextndesign.png";
 import legalisync from "../assets/projects/legalisync.png";
 import radaropportunity from "../assets/projects/radaropportunity.png";
 import ghstosre from "../assets/projects/ghstosre.png";
@@ -21,6 +22,23 @@ export const HERO_CONTENT = `I’m a full-stack developer with 2–3 years of ex
 export const ABOUT_TEXT = `I studied Software Practical Engineering at Braude College and graduated with honors. Over the past 2–3 years, I’ve built and shipped multiple full-stack web projects, including production-ready websites and SaaS platforms. I worked as a Full Stack Developer and Developer Manager at Connec — a startup based in Tamra — where I led development end-to-end, managed the technical roadmap, and delivered real-world products including LegaliSync, Opportunity Radar MENA, and GS Luxury. What truly sets me apart is how I work: I use AI tools — Claude Code, Codex, and others — at a professional, strategic level. This lets me build faster, debug smarter, architect better systems, and deliver results that would take others twice the time. It’s not just about knowing the tools — it’s about extracting maximum performance from every hour of work. I also gained earlier experience at SPA Code and completed intensive full-stack courses on Udemy and at ICS College. I specialize in JavaScript/TypeScript, React, Next.js, Node.js/Express, MongoDB, and SQL, and I’m passionate about building products that solve real problems and continuously pushing my engineering standards higher.`;
 
 export const PROJECTS = [
+  {
+    id: 18,
+    title: "NextNDesign — Electrical & Interior Design Platform",
+    image: nextndesign,
+    url: "https://nextndesign.com",
+    description:
+      "NextNDesign is a full-stack business platform I built for an integrated contracting company combining two divisions: Next Project (electrical infrastructure — wiring, distribution panels, smart lighting, solar systems, 24/7 maintenance) and Studio N Design (interior design — décor, kitchens, bathrooms). The platform serves both Arabic and Hebrew-speaking clients across Israel, featuring a service request system, project portfolio gallery, WhatsApp integration, and a modern bilingual UI. Delivered 200+ electrical projects and 150+ design projects through this platform.",
+    technologies: [
+      "Next.js",
+      "Tailwind CSS",
+      "MongoDB",
+      "WhatsApp API",
+      "Framer Motion",
+      "TypeScript",
+      "Resend API",
+    ],
+  },
   {
     id: 17,
     title: "GS — Luxury Accessories E-Commerce",
