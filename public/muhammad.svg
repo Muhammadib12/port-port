@@ -1,20 +1,40 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 100 100"
-  fill="none"
-  width="100"
-  height="100"
->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" width="100" height="100">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff7eb3" />
-      <stop offset="100%" stop-color="#ff758c" />
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#111111"/>
     </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <path
-    d="M10 90 L10 10 L35 55 L50 30 L65 55 L90 10 L90 90 Z"
-    fill="url(#gradient)"
-    stroke="black"
-    stroke-width="2"
-  />
+
+  <!-- Background -->
+  <rect width="100" height="100" rx="18" fill="url(#bgGrad)"/>
+
+  <!-- Outer border -->
+  <rect x="3" y="3" width="94" height="94" rx="15" stroke="url(#goldGrad)" stroke-width="1.5" fill="none" opacity="0.8"/>
+
+  <!-- Corner brackets TL -->
+  <path d="M3 22 L3 6 Q3 3 6 3 L22 3" stroke="#FFD700" stroke-width="2.5" fill="none" stroke-linecap="square" filter="url(#glow)"/>
+  <!-- Corner brackets TR -->
+  <path d="M78 3 L94 3 Q97 3 97 6 L97 22" stroke="#FFD700" stroke-width="2.5" fill="none" stroke-linecap="square" filter="url(#glow)"/>
+  <!-- Corner brackets BL -->
+  <path d="M3 78 L3 94 Q3 97 6 97 L22 97" stroke="#FFD700" stroke-width="2.5" fill="none" stroke-linecap="square" filter="url(#glow)"/>
+  <!-- Corner brackets BR -->
+  <path d="M78 97 L94 97 Q97 97 97 94 L97 78" stroke="#FFD700" stroke-width="2.5" fill="none" stroke-linecap="square" filter="url(#glow)"/>
+
+  <!-- Letter M -->
+  <path d="M18 75 L18 28 L50 62 L82 28 L82 75" stroke="url(#goldGrad)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+
+  <!-- Underline accent -->
+  <rect x="28" y="82" width="44" height="2.5" rx="1.25" fill="url(#goldGrad)" opacity="0.6"/>
 </svg>
