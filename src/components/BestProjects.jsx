@@ -262,7 +262,7 @@ export default function BestProjects() {
       </motion.div>
 
       {/* Cards */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 max-w-4xl mx-auto">
         {best.map((project, i) => (
           <BestCard key={project.id} project={project} index={i} />
         ))}
