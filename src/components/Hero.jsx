@@ -407,6 +407,41 @@ function Laptop3D() {
 /* ═══════════════════════════════════════
    Hero background
 ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════
+   Hero background — full-section IDE wallpaper
+═══════════════════════════════════════ */
+const BG_CODE_LINES = [
+  { n:  1, tokens: [{ c:'#6272a4', t:'// Muhammad Ibrahim — Full Stack Developer' }] },
+  { n:  2, tokens: [] },
+  { n:  3, tokens: [{ c:'#ff79c6', t:'import' }, { c:'#f8f8f2', t:' { ' }, { c:'#8be9fd', t:'React' }, { c:'#f8f8f2', t:', ' }, { c:'#8be9fd', t:'useState' }, { c:'#f8f8f2', t:' } ' }, { c:'#ff79c6', t:"from" }, { c:'#f1fa8c', t:" 'react'" }] },
+  { n:  4, tokens: [{ c:'#ff79c6', t:'import' }, { c:'#f8f8f2', t:' { ' }, { c:'#8be9fd', t:'NextJS' }, { c:'#f8f8f2', t:', ' }, { c:'#8be9fd', t:'MongoDB' }, { c:'#f8f8f2', t:', ' }, { c:'#8be9fd', t:'Node' }, { c:'#f8f8f2', t:' } ' }, { c:'#ff79c6', t:"from" }, { c:'#f1fa8c', t:" '@stack/core'" }] },
+  { n:  5, tokens: [] },
+  { n:  6, tokens: [{ c:'#6272a4', t:'// AI-powered development workflow' }] },
+  { n:  7, tokens: [{ c:'#ff79c6', t:'const' }, { c:'#f8f8f2', t:' ' }, { c:'#8be9fd', t:'developer' }, { c:'#f8f8f2', t:' = {' }] },
+  { n:  8, tokens: [{ c:'#f8f8f2', t:'  name: ' }, { c:'#f1fa8c', t:'"Muhammad Ibrahim"' }, { c:'#f8f8f2', t:',' }] },
+  { n:  9, tokens: [{ c:'#f8f8f2', t:'  role: ' }, { c:'#f1fa8c', t:'"Full Stack Developer"' }, { c:'#f8f8f2', t:',' }] },
+  { n: 10, tokens: [{ c:'#f8f8f2', t:'  exp:  ' }, { c:'#bd93f9', t:'"2–3 years"' }, { c:'#f8f8f2', t:',' }] },
+  { n: 11, tokens: [{ c:'#f8f8f2', t:'  ai:   [' }, { c:'#f1fa8c', t:'"Claude Code"' }, { c:'#f8f8f2', t:', ' }, { c:'#f1fa8c', t:'"Codex"' }, { c:'#f8f8f2', t:'],' }] },
+  { n: 12, tokens: [{ c:'#f8f8f2', t:'  stack:[' }, { c:'#f1fa8c', t:'"Next.js"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:'"React"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:'"Node"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:'"Mongo"' }, { c:'#f8f8f2', t:'],' }] },
+  { n: 13, tokens: [{ c:'#50fa7b', t:'  status:' }, { c:'#f1fa8c', t:' "available"' }, { c:'#f8f8f2', t:',' }] },
+  { n: 14, tokens: [{ c:'#f8f8f2', t:'}' }] },
+  { n: 15, tokens: [] },
+  { n: 16, tokens: [{ c:'#ff79c6', t:'async function' }, { c:'#50fa7b', t:' buildProject' }, { c:'#f8f8f2', t:'(spec) {' }] },
+  { n: 17, tokens: [{ c:'#8be9fd', t:'  const' }, { c:'#f8f8f2', t:' plan  = ' }, { c:'#ff79c6', t:'await' }, { c:'#50fa7b', t:' Claude' }, { c:'#f8f8f2', t:'.analyze(spec)' }] },
+  { n: 18, tokens: [{ c:'#8be9fd', t:'  const' }, { c:'#f8f8f2', t:' code  = ' }, { c:'#ff79c6', t:'await' }, { c:'#50fa7b', t:' Codex' }, { c:'#f8f8f2', t:'.generate(plan)' }] },
+  { n: 19, tokens: [{ c:'#8be9fd', t:'  const' }, { c:'#f8f8f2', t:' result= ' }, { c:'#ff79c6', t:'await' }, { c:'#50fa7b', t:' deploy' }, { c:'#f8f8f2', t:'(code)' }] },
+  { n: 20, tokens: [{ c:'#ff79c6', t:'  return' }, { c:'#f8f8f2', t:' { result, ' }, { c:'#50fa7b', t:'quality' }, { c:'#f8f8f2', t:': ' }, { c:'#bd93f9', t:'"production"' }, { c:'#f8f8f2', t:' }' }] },
+  { n: 21, tokens: [{ c:'#f8f8f2', t:'}' }] },
+  { n: 22, tokens: [] },
+  { n: 23, tokens: [{ c:'#6272a4', t:'// Projects shipped to production' }] },
+  { n: 24, tokens: [{ c:'#ff79c6', t:'const' }, { c:'#f8f8f2', t:' projects = [' }] },
+  { n: 25, tokens: [{ c:'#f1fa8c', t:'  "LegaliSync"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:' "OpportunityRadar"' }, { c:'#f8f8f2', t:',' }] },
+  { n: 26, tokens: [{ c:'#f1fa8c', t:'  "NextNDesign"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:' "GS Luxury"' }, { c:'#f8f8f2', t:',' }, { c:'#f1fa8c', t:' "Math4U"' }] },
+  { n: 27, tokens: [{ c:'#f8f8f2', t:']' }] },
+  { n: 28, tokens: [] },
+  { n: 29, tokens: [{ c:'#6272a4', t:'// Always learning, always shipping 🚀' }] },
+];
+
 /* ── Floating code card that types itself then fades ── */
 const CODE_SNIPPETS = [
   {
@@ -609,61 +644,106 @@ function MatrixStrip() {
 }
 
 function HeroBG() {
-  const CARDS = [
-    { snippet: CODE_SNIPPETS[0], x: '2%',  y: '8%',  delay: 0.5,  dur: 12 },
-    { snippet: CODE_SNIPPETS[1], x: '2%',  y: '52%', delay: 5,    dur: 12 },
-    { snippet: CODE_SNIPPETS[2], x: '67%', y: '5%',  delay: 2.5,  dur: 12 },
-    { snippet: CODE_SNIPPETS[3], x: '67%', y: '55%', delay: 7,    dur: 12 },
-    { snippet: CODE_SNIPPETS[4], x: '34%', y: '2%',  delay: 9,    dur: 14 },
-  ];
-
   return (
     <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
 
-      {/* Matrix left strip */}
-      <MatrixStrip />
-
-      {/* Perspective floor grid */}
+      {/* ── Full-section IDE code editor wallpaper ── */}
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
-        backgroundImage: `
-          linear-gradient(rgba(255,215,0,0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,215,0,0.05) 1px, transparent 1px)
+        position: 'absolute', inset: 0,
+        display: 'flex',
+        opacity: 0.13,
+      }}>
+        {/* Line-number gutter */}
+        <div style={{
+          width: 42, flexShrink: 0,
+          background: 'rgba(30,31,41,0.8)',
+          borderRight: '1px solid rgba(255,215,0,0.08)',
+          paddingTop: 14,
+        }}>
+          {BG_CODE_LINES.map(l => (
+            <div key={l.n} style={{
+              height: 22, display: 'flex', alignItems: 'center',
+              justifyContent: 'flex-end', paddingRight: 8,
+              fontFamily: 'monospace', fontSize: '0.62rem',
+              color: 'rgba(255,215,0,0.3)',
+            }}>{l.n}</div>
+          ))}
+        </div>
+
+        {/* Code content */}
+        <div style={{ flex: 1, paddingTop: 14, paddingLeft: 16, overflow: 'hidden' }}>
+          {BG_CODE_LINES.map((line, i) => (
+            <motion.div
+              key={line.n}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
+              style={{ height: 22, display: 'flex', alignItems: 'center', gap: 0, whiteSpace: 'nowrap' }}
+            >
+              {line.tokens.map((tok, j) => (
+                <span key={j} style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: tok.c }}>
+                  {tok.t}
+                </span>
+              ))}
+              {/* Blinking cursor on last real line */}
+              {i === BG_CODE_LINES.length - 1 && (
+                <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.9, repeat: Infinity }}
+                  style={{ width: 7, height: 14, background: '#FFD700', display: 'inline-block', marginLeft: 2, borderRadius: 1 }}
+                />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Gradient mask — fades left/right so code doesn't fight text */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: `
+          linear-gradient(to right,
+            rgba(5,5,5,0.92) 0%,
+            rgba(5,5,5,0.55) 22%,
+            rgba(5,5,5,0.25) 48%,
+            rgba(5,5,5,0.55) 72%,
+            rgba(5,5,5,0.92) 100%
+          ),
+          linear-gradient(to bottom,
+            rgba(5,5,5,0.5) 0%,
+            transparent 15%,
+            transparent 80%,
+            rgba(5,5,5,0.7) 100%
+          )
         `,
-        backgroundSize: '42px 42px',
-        maskImage: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)',
-        transform: 'perspective(450px) rotateX(38deg)',
-        transformOrigin: 'bottom center',
       }} />
 
-      {/* Glows */}
-      <div style={{ position: 'absolute', top: '5%', right: '2%', width: '45%', height: '80%', background: 'radial-gradient(ellipse, rgba(255,215,0,0.06) 0%, transparent 65%)' }} />
-      <div style={{ position: 'absolute', top: '10%', left: '8%', width: '25%', height: '50%', background: 'radial-gradient(ellipse, rgba(167,139,250,0.04) 0%, transparent 70%)' }} />
-
-      {/* Floating code cards */}
-      {CARDS.map((c, i) => (
-        <FloatingCodeCard key={i} snippet={c.snippet} x={c.x} y={c.y} delay={c.delay} duration={c.dur} />
-      ))}
-
-      {/* Floating AI chips */}
-      {AI_CHIPS.map((chip, i) => <FloatingChip key={i} chip={chip} />)}
-
-      {/* Sweeping light beam */}
+      {/* Active line highlight — scrolls slowly */}
       <motion.div
-        animate={{ x: ['-5%', '105%'] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 6 }}
-        style={{ position: 'absolute', top: 0, bottom: 0, width: 1, background: 'linear-gradient(to bottom, transparent, rgba(255,215,0,0.2) 40%, rgba(255,215,0,0.2) 60%, transparent)' }}
+        animate={{ y: ['8%', '82%', '8%'] }}
+        transition={{ duration: 18, ease: 'easeInOut', repeat: Infinity }}
+        style={{
+          position: 'absolute', left: 0, right: 0, height: 22,
+          background: 'rgba(255,215,0,0.025)',
+          borderTop: '1px solid rgba(255,215,0,0.06)',
+          borderBottom: '1px solid rgba(255,215,0,0.06)',
+        }}
       />
 
-      {/* Horizontal rules */}
-      {[12, 38, 65, 88].map((t, i) => (
-        <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: `${t}%`, height: 1, background: `rgba(255,215,0,${0.015 + i * 0.007})` }} />
-      ))}
+      {/* Glows */}
+      <div style={{ position: 'absolute', top: '5%', right: '5%', width: '40%', height: '75%', background: 'radial-gradient(ellipse, rgba(255,215,0,0.055) 0%, transparent 65%)' }} />
+      <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: '30%', height: '45%', background: 'radial-gradient(ellipse, rgba(139,92,246,0.04) 0%, transparent 70%)' }} />
+
+      {/* Sweeping scan line */}
+      <motion.div
+        animate={{ x: ['-2%', '102%'] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'linear', repeatDelay: 7 }}
+        style={{ position: 'absolute', top: 0, bottom: 0, width: 1, background: 'linear-gradient(to bottom, transparent, rgba(255,215,0,0.18) 40%, rgba(255,215,0,0.18) 60%, transparent)' }}
+      />
 
       {/* Corner decorations */}
-      <div style={{ position: 'absolute', top: 14, left: 14, width: 36, height: 36, borderTop: '1.5px solid rgba(255,215,0,0.22)', borderLeft: '1.5px solid rgba(255,215,0,0.22)' }} />
-      <div style={{ position: 'absolute', bottom: 14, right: 14, width: 36, height: 36, borderBottom: '1.5px solid rgba(255,215,0,0.22)', borderRight: '1.5px solid rgba(255,215,0,0.22)' }} />
+      <div style={{ position: 'absolute', top: 14, left: 14, width: 36, height: 36, borderTop: '1.5px solid rgba(255,215,0,0.2)', borderLeft: '1.5px solid rgba(255,215,0,0.2)' }} />
+      <div style={{ position: 'absolute', bottom: 14, right: 14, width: 36, height: 36, borderBottom: '1.5px solid rgba(255,215,0,0.2)', borderRight: '1.5px solid rgba(255,215,0,0.2)' }} />
     </div>
   );
 }
