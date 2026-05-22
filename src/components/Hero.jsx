@@ -407,83 +407,263 @@ function Laptop3D() {
 /* ═══════════════════════════════════════
    Hero background
 ═══════════════════════════════════════ */
+/* ── Floating code card that types itself then fades ── */
+const CODE_SNIPPETS = [
+  {
+    label: '● Claude Code',
+    labelColor: '#a78bfa',
+    lines: [
+      { t: 'claude',  c: '#a78bfa', tx: '> Analyzing project structure...' },
+      { t: 'ok',      c: '#4ade80', tx: '✓ Components mapped (12 files)' },
+      { t: 'claude',  c: '#a78bfa', tx: '> Optimizing performance...' },
+      { t: 'ok',      c: '#4ade80', tx: '✓ Bundle size reduced 40%' },
+    ],
+  },
+  {
+    label: '◆ Codex',
+    labelColor: '#38bdf8',
+    lines: [
+      { t: 'codex', c: '#38bdf8', tx: '> Building API routes...' },
+      { t: 'code',  c: '#FFD700', tx: 'app.post("/api/sign", async...)' },
+      { t: 'ok',    c: '#4ade80', tx: '✓ 6 endpoints deployed' },
+      { t: 'codex', c: '#38bdf8', tx: '> Auth middleware ready' },
+    ],
+  },
+  {
+    label: '⬡ Next.js',
+    labelColor: '#FFD700',
+    lines: [
+      { t: 'cmd',  c: 'rgba(255,215,0,0.5)', tx: '$ next build' },
+      { t: 'info', c: 'rgba(255,255,255,0.5)', tx: 'Route (app)  Size' },
+      { t: 'ok',   c: '#4ade80', tx: '○ /  1.2 kB' },
+      { t: 'ok',   c: '#4ade80', tx: '✓ Build completed in 4.2s' },
+    ],
+  },
+  {
+    label: '◉ MongoDB',
+    labelColor: '#86efac',
+    lines: [
+      { t: 'db',   c: '#86efac', tx: '> db.users.insertOne({...})' },
+      { t: 'ok',   c: '#4ade80', tx: '✓ acknowledged: true' },
+      { t: 'db',   c: '#86efac', tx: '> db.contracts.find()' },
+      { t: 'info', c: 'rgba(255,255,255,0.45)', tx: '← 248 documents' },
+    ],
+  },
+  {
+    label: '✦ Claude AI',
+    labelColor: '#f9a8d4',
+    lines: [
+      { t: 'ai',  c: '#f9a8d4', tx: '> Review code quality...' },
+      { t: 'ok',  c: '#4ade80', tx: '✓ No issues found' },
+      { t: 'ai',  c: '#f9a8d4', tx: '> Suggest optimizations...' },
+      { t: 'res', c: 'rgba(255,255,255,0.55)', tx: 'Use useMemo on line 42' },
+    ],
+  },
+];
+
+function FloatingCodeCard({ snippet, x, y, delay, duration }) {
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    let timeouts = [];
+    const cycle = () => {
+      setVisible(false);
+      setVisibleLines(0);
+      const t0 = setTimeout(() => {
+        setVisible(true);
+        snippet.lines.forEach((_, i) => {
+          const t = setTimeout(() => setVisibleLines(i + 1), 300 + i * 420);
+          timeouts.push(t);
+        });
+        const tFade = setTimeout(() => {
+          setVisible(false);
+          const tNext = setTimeout(cycle, 800);
+          timeouts.push(tNext);
+        }, 300 + snippet.lines.length * 420 + 1800);
+        timeouts.push(tFade);
+      }, delay * 1000);
+      timeouts.push(t0);
+    };
+    cycle();
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          key="card"
+          initial={{ opacity: 0, y: 12, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.96 }}
+          transition={{ duration: 0.4 }}
+          style={{
+            position: 'absolute', left: x, top: y,
+            background: 'rgba(6,6,6,0.88)',
+            border: '1px solid rgba(255,215,0,0.18)',
+            borderRadius: 6,
+            padding: '8px 12px',
+            minWidth: 210,
+            backdropFilter: 'blur(4px)',
+            boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+          }}
+        >
+          {/* Header bar */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, borderBottom: '1px solid rgba(255,215,0,0.08)', paddingBottom: 5 }}>
+            <div style={{ display: 'flex', gap: 3 }}>
+              {['#f87171','#fbbf24','#4ade80'].map((c,i) => (
+                <div key={i} style={{ width: 5, height: 5, borderRadius: '50%', background: c, opacity: 0.7 }} />
+              ))}
+            </div>
+            <span style={{ fontFamily: 'monospace', fontSize: '0.52rem', color: snippet.labelColor, letterSpacing: '0.1em' }}>
+              {snippet.label}
+            </span>
+          </div>
+          {/* Lines */}
+          {snippet.lines.map((line, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -6 }}
+              animate={i < visibleLines ? { opacity: 1, x: 0 } : { opacity: 0, x: -6 }}
+              transition={{ duration: 0.25 }}
+              style={{ fontFamily: 'monospace', fontSize: '0.55rem', color: line.c, lineHeight: 1.7, whiteSpace: 'nowrap' }}
+            >
+              {line.tx}
+              {i === visibleLines - 1 && (
+                <motion.span
+                  animate={{ opacity: [1, 0] }} transition={{ duration: 0.6, repeat: Infinity }}
+                  style={{ borderRight: `1px solid ${line.c}`, marginLeft: 2 }}
+                >&nbsp;</motion.span>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ── AI status chips that float up ── */
+const AI_CHIPS = [
+  { text: 'Claude ✓ refactored',  color: '#a78bfa', x: '4%',  delay: 0    },
+  { text: 'Codex ⚡ building...',  color: '#38bdf8', x: '62%', delay: 2.5  },
+  { text: 'Claude ✓ reviewed',    color: '#a78bfa', x: '28%', delay: 5    },
+  { text: 'Codex ✓ deployed',     color: '#38bdf8', x: '75%', delay: 7.5  },
+  { text: 'AI ✓ optimized',       color: '#4ade80', x: '14%', delay: 10   },
+  { text: 'Claude ⚡ analyzing',  color: '#f9a8d4', x: '50%', delay: 12.5 },
+];
+
+function FloatingChip({ chip }) {
+  return (
+    <motion.div
+      animate={{ y: [60, -80], opacity: [0, 0.8, 0.8, 0] }}
+      transition={{ duration: 5, delay: chip.delay, repeat: Infinity, repeatDelay: 8, ease: 'easeOut', times: [0, 0.15, 0.8, 1] }}
+      style={{
+        position: 'absolute', left: chip.x, bottom: '8%',
+        fontFamily: 'monospace', fontSize: '0.52rem', letterSpacing: '0.08em',
+        color: chip.color,
+        background: 'rgba(0,0,0,0.75)',
+        border: `1px solid ${chip.color}44`,
+        padding: '3px 9px', borderRadius: 20,
+        whiteSpace: 'nowrap',
+        boxShadow: `0 0 10px ${chip.color}22`,
+      }}
+    >
+      {chip.text}
+    </motion.div>
+  );
+}
+
+/* ── Falling matrix chars in left strip ── */
+function MatrixStrip() {
+  const CHARS = '01アイウエカサタナハマクスコソトノホモ{}[]<>/=+*';
+  const cols = 8;
+  return (
+    <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 52, overflow: 'hidden', opacity: 0.35 }}>
+      {Array.from({ length: cols }).map((_, ci) => (
+        <motion.div
+          key={ci}
+          animate={{ y: ['-100%', '120%'] }}
+          transition={{ duration: 4 + ci * 0.7, delay: ci * 0.5, repeat: Infinity, ease: 'linear' }}
+          style={{
+            position: 'absolute',
+            left: ci * 7,
+            top: 0,
+            display: 'flex', flexDirection: 'column', gap: 2,
+          }}
+        >
+          {Array.from({ length: 12 }).map((_, ri) => (
+            <div key={ri} style={{
+              fontFamily: 'monospace', fontSize: '0.45rem',
+              color: ri === 0 ? '#FFD700' : `rgba(255,215,0,${0.5 - ri * 0.04})`,
+              lineHeight: 1.4,
+            }}>
+              {CHARS[Math.floor((ci * 13 + ri * 7) % CHARS.length)]}
+            </div>
+          ))}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function HeroBG() {
+  const CARDS = [
+    { snippet: CODE_SNIPPETS[0], x: '2%',  y: '8%',  delay: 0.5,  dur: 12 },
+    { snippet: CODE_SNIPPETS[1], x: '2%',  y: '52%', delay: 5,    dur: 12 },
+    { snippet: CODE_SNIPPETS[2], x: '67%', y: '5%',  delay: 2.5,  dur: 12 },
+    { snippet: CODE_SNIPPETS[3], x: '67%', y: '55%', delay: 7,    dur: 12 },
+    { snippet: CODE_SNIPPETS[4], x: '34%', y: '2%',  delay: 9,    dur: 14 },
+  ];
+
   return (
     <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
 
+      {/* Matrix left strip */}
+      <MatrixStrip />
+
       {/* Perspective floor grid */}
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%',
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
         backgroundImage: `
-          linear-gradient(rgba(255,215,0,0.055) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,215,0,0.055) 1px, transparent 1px)
+          linear-gradient(rgba(255,215,0,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,215,0,0.05) 1px, transparent 1px)
         `,
         backgroundSize: '42px 42px',
-        maskImage: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+        maskImage: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)',
         transform: 'perspective(450px) rotateX(38deg)',
         transformOrigin: 'bottom center',
       }} />
 
-      {/* Top-right glow (behind laptop) */}
-      <div style={{
-        position: 'absolute', top: '5%', right: '3%',
-        width: '48%', height: '85%',
-        background: 'radial-gradient(ellipse, rgba(255,215,0,0.065) 0%, transparent 65%)',
-      }} />
+      {/* Glows */}
+      <div style={{ position: 'absolute', top: '5%', right: '2%', width: '45%', height: '80%', background: 'radial-gradient(ellipse, rgba(255,215,0,0.06) 0%, transparent 65%)' }} />
+      <div style={{ position: 'absolute', top: '10%', left: '8%', width: '25%', height: '50%', background: 'radial-gradient(ellipse, rgba(167,139,250,0.04) 0%, transparent 70%)' }} />
 
-      {/* Top-left accent */}
-      <div style={{
-        position: 'absolute', top: '10%', left: '-3%',
-        width: '32%', height: '50%',
-        background: 'radial-gradient(ellipse, rgba(255,215,0,0.035) 0%, transparent 70%)',
-      }} />
-
-      {/* Floating particles */}
-      {[
-        { x: '7%',  y: '18%', s: 3, d: 0   },
-        { x: '18%', y: '72%', s: 2, d: 1.1 },
-        { x: '33%', y: '28%', s: 2, d: 2.2 },
-        { x: '72%', y: '62%', s: 3, d: 0.4 },
-        { x: '87%', y: '22%', s: 2, d: 1.6 },
-        { x: '58%', y: '78%', s: 2, d: 2.7 },
-        { x: '47%', y: '8%',  s: 2, d: 0.9 },
-        { x: '92%', y: '55%', s: 2, d: 1.8 },
-      ].map((p, i) => (
-        <motion.div
-          key={i}
-          animate={{ y: [0, -20, 0], opacity: [0.35, 0.85, 0.35] }}
-          transition={{ duration: 3 + i * 0.35, delay: p.d, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute', left: p.x, top: p.y,
-            width: p.s, height: p.s, borderRadius: '50%',
-            background: '#FFD700', boxShadow: `0 0 ${p.s * 3}px #FFD700`,
-          }}
-        />
+      {/* Floating code cards */}
+      {CARDS.map((c, i) => (
+        <FloatingCodeCard key={i} snippet={c.snippet} x={c.x} y={c.y} delay={c.delay} duration={c.dur} />
       ))}
 
-      {/* Sweeping vertical light beam */}
+      {/* Floating AI chips */}
+      {AI_CHIPS.map((chip, i) => <FloatingChip key={i} chip={chip} />)}
+
+      {/* Sweeping light beam */}
       <motion.div
-        animate={{ x: ['-8%', '108%'] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 5 }}
-        style={{
-          position: 'absolute', top: 0, bottom: 0, width: 1,
-          background: 'linear-gradient(to bottom, transparent 0%, rgba(255,215,0,0.25) 40%, rgba(255,215,0,0.25) 60%, transparent 100%)',
-        }}
+        animate={{ x: ['-5%', '105%'] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'linear', repeatDelay: 6 }}
+        style={{ position: 'absolute', top: 0, bottom: 0, width: 1, background: 'linear-gradient(to bottom, transparent, rgba(255,215,0,0.2) 40%, rgba(255,215,0,0.2) 60%, transparent)' }}
       />
 
-      {/* Subtle horizontal rules */}
-      {[12, 38, 64, 87].map((t, i) => (
-        <div key={i} style={{
-          position: 'absolute', left: 0, right: 0, top: `${t}%`, height: 1,
-          background: `rgba(255,215,0,${0.018 + i * 0.008})`,
-        }} />
+      {/* Horizontal rules */}
+      {[12, 38, 65, 88].map((t, i) => (
+        <div key={i} style={{ position: 'absolute', left: 0, right: 0, top: `${t}%`, height: 1, background: `rgba(255,215,0,${0.015 + i * 0.007})` }} />
       ))}
 
-      {/* Corner decoration — top left */}
-      <div style={{ position: 'absolute', top: 16, left: 16, width: 40, height: 40, borderTop: '1.5px solid rgba(255,215,0,0.25)', borderLeft: '1.5px solid rgba(255,215,0,0.25)' }} />
-      {/* Corner decoration — bottom right */}
-      <div style={{ position: 'absolute', bottom: 16, right: 16, width: 40, height: 40, borderBottom: '1.5px solid rgba(255,215,0,0.25)', borderRight: '1.5px solid rgba(255,215,0,0.25)' }} />
+      {/* Corner decorations */}
+      <div style={{ position: 'absolute', top: 14, left: 14, width: 36, height: 36, borderTop: '1.5px solid rgba(255,215,0,0.22)', borderLeft: '1.5px solid rgba(255,215,0,0.22)' }} />
+      <div style={{ position: 'absolute', bottom: 14, right: 14, width: 36, height: 36, borderBottom: '1.5px solid rgba(255,215,0,0.22)', borderRight: '1.5px solid rgba(255,215,0,0.22)' }} />
     </div>
   );
 }
