@@ -19,9 +19,9 @@ function useScrollCycle(totalPx, duration = 26) {
   useEffect(() => {
     let raf, start, fromY = 0, toY = -totalPx;
     const SCROLL_FRAC = 0.7;   // 70% of duration = scroll
-    const HOLD_MS     = 500;   // pause at bottom before reveal
-    const FLASH_MS    = 3000;  // domain reveal screen duration
-    const RESET_HOLD  = 400;   // pause at top before next cycle
+    const HOLD_MS     = 0;     // no pause — reveal immediately after scroll
+    const FLASH_MS    = 3200;  // domain reveal screen duration
+    const RESET_HOLD  = 300;   // pause at top before next cycle
 
     function scrollAnim(ts) {
       if (!start) start = ts;
@@ -305,8 +305,8 @@ function ScreenContent({ loaded, error, setLoaded, setError, scrollY, phase, ifw
 ══════════════════════════════════════ */
 function DesktopMonitor({ loaded, error, setLoaded, setError }) {
   const IFW = MON_W / SCALE;
-  const IFH = 7000;
-  const SCROLL_TOTAL = (IFH - MON_H / SCALE) * 0.68;
+  const IFH = 12000;
+  const SCROLL_TOTAL = IFH - MON_H / SCALE;
   const { y, phase } = useScrollCycle(SCROLL_TOTAL, 26);
 
   return (
@@ -406,8 +406,8 @@ function DesktopMonitor({ loaded, error, setLoaded, setError }) {
 function MobilePhone({ loaded, error, setLoaded, setError }) {
   const PH_SCALE = 0.38;
   const IFW = PHN_W / PH_SCALE;
-  const IFH = 8000;
-  const SCROLL_TOTAL = (IFH - PHN_H / PH_SCALE) * 0.65;
+  const IFH = 12000;
+  const SCROLL_TOTAL = IFH - PHN_H / PH_SCALE;
   const { y, phase } = useScrollCycle(SCROLL_TOTAL, 24);
 
   return (
