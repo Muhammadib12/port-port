@@ -66,15 +66,9 @@ function DomainReveal({ phase }) {
 
   useEffect(() => {
     if (phase !== "flash") { setChars(0); setShowCheck(false); return; }
-    let i = 0;
-    const t = setInterval(() => {
-      i++;
-      setChars(i);
-      if (i >= DOMAIN.length) {
-        clearInterval(t);
-        setTimeout(() => setShowCheck(true), 80);
-      }
-    }, 28);
+    // show all chars instantly, then checkmark
+    setChars(DOMAIN.length);
+    setTimeout(() => setShowCheck(true), 120);
     return () => clearInterval(t);
   }, [phase]);
 
