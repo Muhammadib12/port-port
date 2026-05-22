@@ -1,238 +1,522 @@
 import React, { useState, useEffect } from 'react';
 import { HERO_CONTENT } from '../constants';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
-const CODE_LINES = [
-  { indent: 0, color: "#FFD700",            text: "const dev = {" },
-  { indent: 1, color: "rgba(255,215,0,0.6)", text: 'name: "Muhammad",' },
-  { indent: 1, color: "rgba(255,215,0,0.6)", text: 'stack: "Full Stack",' },
-  { indent: 1, color: "#4ade80",             text: 'status: "available",' },
-  { indent: 1, color: "rgba(255,215,0,0.6)", text: 'ai: ["Claude","Codex"],' },
-  { indent: 0, color: "#FFD700",            text: "};" },
-  { indent: 0, color: "rgba(255,215,0,0.35)", text: "// building..." },
+/* ═══════════════════════════════════════
+   Browser animation state machine
+   idle → typing → enter → loading → site → idle
+═══════════════════════════════════════ */
+const URL_STR    = "mohamad-ibrahim.com";
+const CHAR_DELAY = 95;
+
+function useBrowserAnimation() {
+  const [phase,      setPhase]      = useState('idle');
+  const [typedChars, setTypedChars] = useState(0);
+  const [activeKey,  setActiveKey]  = useState(null);
+
+  useEffect(() => {
+    let t;
+    if (phase === 'idle') {
+      t = setTimeout(() => { setTypedChars(0); setPhase('typing'); }, 1200);
+    } else if (phase === 'typing') {
+      if (typedChars < URL_STR.length) {
+        t = setTimeout(() => {
+          const ch = URL_STR[typedChars].toUpperCase();
+          setActiveKey(ch === '-' || ch === '.' ? null : ch);
+          setTypedChars(c => c + 1);
+        }, CHAR_DELAY);
+      } else {
+        t = setTimeout(() => { setActiveKey('ENTER'); setPhase('enter'); }, 350);
+      }
+    } else if (phase === 'enter') {
+      t = setTimeout(() => { setActiveKey(null); setPhase('loading'); }, 280);
+    } else if (phase === 'loading') {
+      t = setTimeout(() => setPhase('site'), 1300);
+    } else if (phase === 'site') {
+      t = setTimeout(() => { setTypedChars(0); setPhase('idle'); }, 3200);
+    }
+    return () => clearTimeout(t);
+  }, [phase, typedChars]);
+
+  return { phase, typedChars, activeKey };
+}
+
+/* ═══════════════════════════════════════
+   Browser screen content
+═══════════════════════════════════════ */
+function BrowserScreen({ phase, typedChars }) {
+  const displayUrl = URL_STR.slice(0, typedChars);
+  const isTyping   = phase === 'typing' || phase === 'idle';
+  const isSite     = phase === 'site';
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: '#080808' }}>
+
+      {/* ── Top chrome ── */}
+      <div style={{ background: '#101010', borderBottom: '1px solid rgba(255,215,0,0.12)', padding: '5px 8px 0', flexShrink: 0 }}>
+        {/* Tabs */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+          {['#f87171','#fbbf24','#4ade80'].map((c,i) => (
+            <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: c, opacity: 0.8 }} />
+          ))}
+          <div style={{
+            marginLeft: 6, background: 'rgba(255,215,0,0.07)',
+            border: '1px solid rgba(255,215,0,0.13)', borderRadius: '3px 3px 0 0',
+            padding: '3px 12px', fontFamily: 'monospace', fontSize: '0.5rem',
+            color: 'rgba(255,215,0,0.45)', maxWidth: 150, overflow: 'hidden', whiteSpace: 'nowrap',
+          }}>
+            {isSite ? 'Muhammad Ibrahim | Full Stack Dev' : 'New Tab'}
+          </div>
+        </div>
+
+        {/* Address bar */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          background: 'rgba(255,255,255,0.03)',
+          border: `1px solid ${phase === 'typing' || phase === 'enter' ? 'rgba(255,215,0,0.55)' : 'rgba(255,215,0,0.13)'}`,
+          borderRadius: 4, padding: '4px 10px', marginBottom: 5,
+          transition: 'border-color 0.25s',
+          boxShadow: phase === 'typing' || phase === 'enter' ? '0 0 8px rgba(255,215,0,0.1)' : 'none',
+        }}>
+          <span style={{ fontSize: '0.55rem', color: isSite ? '#4ade80' : 'rgba(255,215,0,0.3)', flexShrink: 0 }}>🔒</span>
+          <span style={{
+            fontFamily: 'monospace', fontSize: '0.6rem', flex: 1,
+            color: isSite ? '#4ade80' : 'rgba(255,255,255,0.75)',
+            letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden',
+          }}>
+            {isSite ? URL_STR : displayUrl}
+            {isTyping && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.65, repeat: Infinity }}
+                style={{ borderRight: '1.5px solid #FFD700', marginLeft: 1 }}
+              >&nbsp;</motion.span>
+            )}
+          </span>
+          {phase === 'loading' && (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 0.75, repeat: Infinity, ease: 'linear' }}
+              style={{ width: 8, height: 8, border: '1.5px solid rgba(255,215,0,0.25)', borderTopColor: '#FFD700', borderRadius: '50%', flexShrink: 0 }}
+            />
+          )}
+        </div>
+
+        {/* Loading progress bar */}
+        {phase === 'loading' && (
+          <motion.div
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
+            style={{ height: 2, background: 'linear-gradient(to right, #FFD700, rgba(255,215,0,0.5))', borderRadius: 1, marginBottom: 0 }}
+          />
+        )}
+      </div>
+
+      {/* ── Page content ── */}
+      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        <AnimatePresence mode="wait">
+          {isSite ? (
+            <motion.div
+              key="site"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.45 }}
+              style={{ padding: '10px 12px', height: '100%', display: 'flex', flexDirection: 'column', gap: 7 }}
+            >
+              {/* Fake navbar */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ width: 38, height: 5, background: '#FFD700', borderRadius: 2 }} />
+                <div style={{ display: 'flex', gap: 5 }}>
+                  {[28,24,32,26].map((w,i) => (
+                    <div key={i} style={{ width: w, height: 3, background: 'rgba(255,215,0,0.25)', borderRadius: 2 }} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Fake hero row */}
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flex: 1 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ width: '85%', height: 8, background: '#FFD700', borderRadius: 2, marginBottom: 5 }} />
+                  <div style={{ width: '55%', height: 4, background: 'rgba(255,215,0,0.5)', borderRadius: 2, marginBottom: 5 }} />
+                  {[90, 75, 60].map((w,i) => (
+                    <div key={i} style={{ width: `${w}%`, height: 3, background: 'rgba(255,215,0,0.12)', borderRadius: 1, marginBottom: 3 }} />
+                  ))}
+                  <div style={{ marginTop: 6, width: 48, height: 14, background: 'rgba(255,215,0,0.12)', border: '1px solid rgba(255,215,0,0.3)', borderRadius: 2 }} />
+                </div>
+                {/* Laptop silhouette */}
+                <div style={{ width: 52, height: 38, border: '1.5px solid rgba(255,215,0,0.45)', borderRadius: 3, background: 'rgba(255,215,0,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: 30, height: 20, border: '1px solid rgba(255,215,0,0.3)', borderRadius: 2, background: '#050505', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: 18, height: 2, background: 'rgba(255,215,0,0.4)', borderRadius: 1 }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating badge that slides out from the screen */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5, type: 'spring', stiffness: 180 }}
+                style={{
+                  alignSelf: 'flex-start',
+                  fontFamily: 'monospace', fontSize: '0.62rem', letterSpacing: '0.15em',
+                  color: '#FFD700', padding: '4px 10px',
+                  border: '1px solid rgba(255,215,0,0.4)',
+                  background: 'rgba(255,215,0,0.06)',
+                  textShadow: '0 0 10px rgba(255,215,0,0.5)',
+                  boxShadow: '0 0 14px rgba(255,215,0,0.12)',
+                }}
+              >
+                ★ FULL STACK DEVELOPER
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="new-tab"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}
+            >
+              {/* Google logo */}
+              <div style={{ fontFamily: 'serif', fontSize: '1.5rem', fontWeight: 'bold', letterSpacing: '-0.02em' }}>
+                {[['G','#4285f4'],['o','#ea4335'],['o','#fbbc04'],['g','#4285f4'],['l','#34a853'],['e','#ea4335']].map(([l,c],i) => (
+                  <span key={i} style={{ color: c, opacity: 0.55 }}>{l}</span>
+                ))}
+              </div>
+              <div style={{ width: '75%', height: 16, border: '1px solid rgba(255,215,0,0.12)', borderRadius: 8, background: 'rgba(255,255,255,0.02)' }} />
+              <div style={{ display: 'flex', gap: 8 }}>
+                {[70, 80].map((w,i) => (
+                  <div key={i} style={{ width: w, height: 12, background: 'rgba(255,215,0,0.06)', border: '1px solid rgba(255,215,0,0.1)', borderRadius: 3 }} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════
+   Keyboard visual
+═══════════════════════════════════════ */
+const KB_ROWS = [
+  ['Q','W','E','R','T','Y','U','I','O','P'],
+  ['A','S','D','F','G','H','J','K','L'],
+  ['Z','X','C','V','B','N','M'],
 ];
 
-function Laptop3D() {
+function KeyboardVisual({ activeKey }) {
+  return (
+    <div style={{
+      background: 'linear-gradient(to bottom, #161616, #0d0d0d)',
+      border: '1.5px solid rgba(255,215,0,0.32)',
+      borderTop: 'none',
+      borderRadius: '0 0 8px 8px',
+      padding: '7px 12px 9px',
+      boxShadow: '0 12px 40px rgba(0,0,0,0.75), 0 0 18px rgba(255,215,0,0.05)',
+    }}>
+      {KB_ROWS.map((row, ri) => (
+        <div key={ri} style={{ display: 'flex', justifyContent: 'center', gap: 3, marginBottom: 3 }}>
+          {row.map((key) => {
+            const on = activeKey === key;
+            return (
+              <motion.div
+                key={key}
+                animate={on
+                  ? { scale: 0.85, background: 'rgba(255,215,0,0.3)', borderColor: 'rgba(255,215,0,0.7)' }
+                  : { scale: 1,    background: 'rgba(255,215,0,0.05)', borderColor: 'rgba(255,215,0,0.14)' }
+                }
+                transition={{ duration: 0.07 }}
+                style={{
+                  width: 16, height: 13,
+                  border: '1px solid rgba(255,215,0,0.14)',
+                  borderRadius: 2,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'monospace', fontSize: '0.37rem',
+                  color: on ? '#FFD700' : 'rgba(255,215,0,0.3)',
+                  boxShadow: on ? '0 0 8px rgba(255,215,0,0.45)' : 'none',
+                }}
+              >
+                {key}
+              </motion.div>
+            );
+          })}
+        </div>
+      ))}
+      {/* Bottom row: space + enter */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 3, marginTop: 1 }}>
+        {[16,16,16,16].map((_,i) => (
+          <div key={i} style={{ width: 16, height: 9, background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.12)', borderRadius: 2 }} />
+        ))}
+        <motion.div
+          animate={activeKey === 'ENTER'
+            ? { background: 'rgba(255,215,0,0.35)', borderColor: 'rgba(255,215,0,0.7)' }
+            : { background: 'rgba(255,215,0,0.05)', borderColor: 'rgba(255,215,0,0.14)' }
+          }
+          style={{ width: 60, height: 9, border: '1px solid rgba(255,215,0,0.14)', borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          transition={{ duration: 0.07 }}
+        >
+          <span style={{ fontFamily: 'monospace', fontSize: '0.35rem', color: activeKey === 'ENTER' ? '#FFD700' : 'rgba(255,215,0,0.25)' }}>ENTER</span>
+        </motion.div>
+        {[16,16].map((_,i) => (
+          <div key={i} style={{ width: 16, height: 9, background: 'rgba(255,215,0,0.05)', border: '1px solid rgba(255,215,0,0.12)', borderRadius: 2 }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════
+   Mouse cursor SVG with idle drift
+═══════════════════════════════════════ */
+function MouseCursor({ phase }) {
+  const isClicking = phase === 'enter';
   return (
     <motion.div
-      animate={{ y: [0, -14, 0] }}
-      transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", userSelect: "none" }}
+      animate={{ x: [0, 6, 2, -4, 0], y: [0, -4, 6, 1, 0] }}
+      transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+      style={{ position: 'absolute', right: -36, bottom: 28, zIndex: 10 }}
     >
-      {/* Ambient glow */}
-      <div style={{
-        position: "absolute",
-        width: 340, height: 220,
-        borderRadius: "50%",
-        background: "radial-gradient(ellipse, rgba(255,215,0,0.12) 0%, transparent 70%)",
-        filter: "blur(20px)",
-        pointerEvents: "none",
-        zIndex: 0,
-      }} />
+      <motion.svg
+        width="22" height="34" viewBox="0 0 22 34" fill="none"
+        animate={{ scale: isClicking ? 0.9 : 1 }}
+        transition={{ duration: 0.1 }}
+      >
+        <rect x="1" y="1" width="20" height="32" rx="10"
+          stroke="rgba(255,215,0,0.6)" strokeWidth="1.5" fill="rgba(0,0,0,0.85)" />
+        <line x1="11" y1="1" x2="11" y2="14" stroke="rgba(255,215,0,0.35)" strokeWidth="1" />
+        <motion.rect x="7" y="4" width="4" height="7" rx="2" fill="#FFD700"
+          animate={{ opacity: isClicking ? 1 : [0.8, 0.2, 0.8] }}
+          transition={isClicking ? { duration: 0.1 } : { duration: 1.8, repeat: Infinity }}
+        />
+      </motion.svg>
+    </motion.div>
+  );
+}
 
-      {/* Laptop lid (screen) */}
+/* ═══════════════════════════════════════
+   Full laptop assembly
+═══════════════════════════════════════ */
+function Laptop3D() {
+  const { phase, typedChars, activeKey } = useBrowserAnimation();
+
+  return (
+    <motion.div
+      animate={{ y: [0, -13, 0] }}
+      transition={{ duration: 4.5, ease: 'easeInOut', repeat: Infinity }}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', userSelect: 'none', position: 'relative' }}
+    >
+      {/* Ambient glow behind screen */}
+      <motion.div
+        animate={{ opacity: phase === 'site' ? 0.75 : 0.35 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          position: 'absolute', top: '5%', left: '50%',
+          transform: 'translateX(-50%)',
+          width: 340, height: 240,
+          background: 'radial-gradient(ellipse, rgba(255,215,0,0.15) 0%, transparent 70%)',
+          filter: 'blur(22px)',
+          pointerEvents: 'none', zIndex: 0,
+        }}
+      />
+
+      {/* Screen lid */}
       <div style={{
-        position: "relative",
-        width: 320,
-        height: 210,
-        background: "linear-gradient(160deg, #111 0%, #080808 100%)",
-        border: "2px solid rgba(255,215,0,0.55)",
-        borderRadius: "10px 10px 0 0",
-        boxShadow: "0 0 30px rgba(255,215,0,0.15), 0 0 80px rgba(255,215,0,0.06), inset 0 0 20px rgba(0,0,0,0.8)",
+        position: 'relative', width: 320, height: 210,
+        borderRadius: '10px 10px 0 0', overflow: 'hidden',
+        border: '2px solid rgba(255,215,0,0.52)',
+        borderBottom: 'none',
+        boxShadow: '0 0 35px rgba(255,215,0,0.14), inset 0 0 20px rgba(0,0,0,0.6)',
         zIndex: 1,
-        overflow: "hidden",
-        transform: "rotateX(-6deg)",
-        transformOrigin: "bottom center",
+        transform: 'rotateX(-4deg)', transformOrigin: 'bottom center',
       }}>
-        {/* Screen bezel top bar */}
+        <BrowserScreen phase={phase} typedChars={typedChars} />
+
+        {/* Scanlines */}
         <div style={{
-          display: "flex", alignItems: "center",
-          padding: "7px 12px", gap: 6,
-          borderBottom: "1px solid rgba(255,215,0,0.15)",
-          background: "rgba(255,215,0,0.03)",
-        }}>
-          {["#f87171","#fbbf24","#4ade80"].map((c,i) => (
-            <div key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: c, opacity: 0.85 }} />
-          ))}
-          <span style={{ marginLeft: "auto", fontFamily: "monospace", fontSize: "0.55rem", color: "rgba(255,215,0,0.4)", letterSpacing: "0.12em" }}>
-            ~/portfolio/dev.js
-          </span>
-        </div>
-
-        {/* Screen content — code editor */}
-        <div style={{ padding: "12px 14px" }}>
-          {/* Line numbers + code */}
-          {CODE_LINES.map((line, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 + i * 0.18, duration: 0.35 }}
-              style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}
-            >
-              <span style={{ fontFamily: "monospace", fontSize: "0.55rem", color: "rgba(255,215,0,0.2)", minWidth: 14, textAlign: "right" }}>
-                {i + 1}
-              </span>
-              <span style={{
-                fontFamily: "monospace",
-                fontSize: "0.62rem",
-                color: line.color,
-                paddingLeft: line.indent * 14,
-                letterSpacing: "0.03em",
-              }}>
-                {line.text}
-              </span>
-            </motion.div>
-          ))}
-
-          {/* Blinking cursor */}
-          <motion.div
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 1, repeat: Infinity }}
-            style={{
-              display: "inline-block",
-              width: 7, height: 13,
-              background: "#FFD700",
-              marginLeft: 28,
-              marginTop: 2,
-              borderRadius: 1,
-            }}
-          />
-        </div>
-
-        {/* Scanline overlay */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)",
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px)',
         }} />
-
-        {/* Screen glow */}
+        {/* Screen top glow */}
         <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(ellipse 70% 60% at 50% 30%, rgba(255,215,0,0.04) 0%, transparent 70%)",
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,215,0,0.04) 0%, transparent 70%)',
         }} />
 
         {/* Corner brackets */}
         {[
-          { top: 6, left: 6, borderTop: "2px solid #FFD700", borderLeft: "2px solid #FFD700" },
-          { top: 6, right: 6, borderTop: "2px solid #FFD700", borderRight: "2px solid #FFD700" },
-          { bottom: 6, left: 6, borderBottom: "2px solid #FFD700", borderLeft: "2px solid #FFD700" },
-          { bottom: 6, right: 6, borderBottom: "2px solid #FFD700", borderRight: "2px solid #FFD700" },
+          { top: 5, left: 5, borderTop: '2px solid #FFD700', borderLeft: '2px solid #FFD700' },
+          { top: 5, right: 5, borderTop: '2px solid #FFD700', borderRight: '2px solid #FFD700' },
+          { bottom: 5, left: 5, borderBottom: '2px solid #FFD700', borderLeft: '2px solid #FFD700' },
+          { bottom: 5, right: 5, borderBottom: '2px solid #FFD700', borderRight: '2px solid #FFD700' },
         ].map((s, i) => (
-          <div key={i} style={{ position: "absolute", width: 14, height: 14, pointerEvents: "none", ...s }} />
+          <div key={i} style={{ position: 'absolute', width: 13, height: 13, pointerEvents: 'none', ...s }} />
         ))}
       </div>
 
-      {/* Hinge shadow */}
-      <div style={{
-        width: 316,
-        height: 5,
-        background: "linear-gradient(to bottom, rgba(255,215,0,0.3), transparent)",
-        zIndex: 2,
-      }} />
+      {/* Hinge */}
+      <div style={{ width: 316, height: 4, background: 'linear-gradient(to bottom, rgba(255,215,0,0.3), transparent)', zIndex: 2 }} />
 
-      {/* Base (keyboard) */}
-      <div style={{
-        width: 330,
-        height: 20,
-        background: "linear-gradient(to bottom, #1a1a1a, #0d0d0d)",
-        border: "2px solid rgba(255,215,0,0.4)",
-        borderTop: "none",
-        borderRadius: "0 0 6px 6px",
-        zIndex: 1,
-        position: "relative",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.6), 0 0 20px rgba(255,215,0,0.08)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2,
-        padding: "0 20px",
-      }}>
-        {/* Keyboard keys row */}
-        {Array.from({ length: 22 }).map((_, i) => (
-          <div key={i} style={{
-            flex: i === 10 ? 3 : 1,
-            height: 7,
-            background: "rgba(255,215,0,0.08)",
-            border: "1px solid rgba(255,215,0,0.15)",
-            borderRadius: 2,
-          }} />
-        ))}
+      {/* Keyboard base */}
+      <div style={{ width: 320, zIndex: 1 }}>
+        <KeyboardVisual activeKey={activeKey} />
       </div>
 
-      {/* Trackpad strip */}
+      {/* Trackpad */}
       <div style={{
-        width: 90, height: 12,
-        background: "rgba(255,215,0,0.05)",
-        border: "1px solid rgba(255,215,0,0.2)",
-        borderTop: "none",
-        borderRadius: "0 0 6px 6px",
-        zIndex: 1,
+        width: 82, height: 11,
+        background: 'rgba(255,215,0,0.04)',
+        border: '1px solid rgba(255,215,0,0.16)',
+        borderTop: 'none', borderRadius: '0 0 5px 5px',
       }} />
 
       {/* Surface reflection */}
       <div style={{
-        width: 330, height: 8,
-        background: "linear-gradient(to bottom, rgba(255,215,0,0.06), transparent)",
-        borderRadius: "0 0 4px 4px",
-        marginTop: 1,
-        filter: "blur(2px)",
+        width: 320, height: 6, marginTop: 1,
+        background: 'linear-gradient(to bottom, rgba(255,215,0,0.07), transparent)',
+        filter: 'blur(2px)', borderRadius: '0 0 4px 4px',
       }} />
 
-      {/* AVAILABLE FOR HIRE badge */}
+      {/* Floating mouse */}
+      <MouseCursor phase={phase} />
+
+      {/* AVAILABLE badge */}
       <motion.div
-        animate={{ opacity: [1, 0.5, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
+        animate={{ opacity: [1, 0.45, 1] }}
+        transition={{ duration: 2.2, repeat: Infinity }}
         style={{
-          marginTop: 18,
-          display: "flex", alignItems: "center", gap: 7,
-          fontFamily: "monospace", fontSize: "0.7rem",
-          background: "rgba(0,0,0,0.85)",
-          border: "1px solid rgba(255,215,0,0.4)",
-          color: "#4ade80",
-          padding: "5px 14px",
-          borderRadius: 2,
-          letterSpacing: "0.1em",
+          marginTop: 20,
+          display: 'flex', alignItems: 'center', gap: 7,
+          fontFamily: 'monospace', fontSize: '0.7rem', letterSpacing: '0.1em',
+          background: 'rgba(0,0,0,0.88)',
+          border: '1px solid rgba(255,215,0,0.38)',
+          color: '#4ade80', padding: '5px 14px', borderRadius: 2,
         }}
       >
-        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", display: "inline-block", boxShadow: "0 0 6px #4ade80" }} />
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', display: 'inline-block', boxShadow: '0 0 6px #4ade80' }} />
         AVAILABLE FOR HIRE
       </motion.div>
     </motion.div>
   );
 }
 
+/* ═══════════════════════════════════════
+   Hero background
+═══════════════════════════════════════ */
+function HeroBG() {
+  return (
+    <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+
+      {/* Perspective floor grid */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%',
+        backgroundImage: `
+          linear-gradient(rgba(255,215,0,0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,215,0,0.055) 1px, transparent 1px)
+        `,
+        backgroundSize: '42px 42px',
+        maskImage: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+        WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+        transform: 'perspective(450px) rotateX(38deg)',
+        transformOrigin: 'bottom center',
+      }} />
+
+      {/* Top-right glow (behind laptop) */}
+      <div style={{
+        position: 'absolute', top: '5%', right: '3%',
+        width: '48%', height: '85%',
+        background: 'radial-gradient(ellipse, rgba(255,215,0,0.065) 0%, transparent 65%)',
+      }} />
+
+      {/* Top-left accent */}
+      <div style={{
+        position: 'absolute', top: '10%', left: '-3%',
+        width: '32%', height: '50%',
+        background: 'radial-gradient(ellipse, rgba(255,215,0,0.035) 0%, transparent 70%)',
+      }} />
+
+      {/* Floating particles */}
+      {[
+        { x: '7%',  y: '18%', s: 3, d: 0   },
+        { x: '18%', y: '72%', s: 2, d: 1.1 },
+        { x: '33%', y: '28%', s: 2, d: 2.2 },
+        { x: '72%', y: '62%', s: 3, d: 0.4 },
+        { x: '87%', y: '22%', s: 2, d: 1.6 },
+        { x: '58%', y: '78%', s: 2, d: 2.7 },
+        { x: '47%', y: '8%',  s: 2, d: 0.9 },
+        { x: '92%', y: '55%', s: 2, d: 1.8 },
+      ].map((p, i) => (
+        <motion.div
+          key={i}
+          animate={{ y: [0, -20, 0], opacity: [0.35, 0.85, 0.35] }}
+          transition={{ duration: 3 + i * 0.35, delay: p.d, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute', left: p.x, top: p.y,
+            width: p.s, height: p.s, borderRadius: '50%',
+            background: '#FFD700', boxShadow: `0 0 ${p.s * 3}px #FFD700`,
+          }}
+        />
+      ))}
+
+      {/* Sweeping vertical light beam */}
+      <motion.div
+        animate={{ x: ['-8%', '108%'] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'linear', repeatDelay: 5 }}
+        style={{
+          position: 'absolute', top: 0, bottom: 0, width: 1,
+          background: 'linear-gradient(to bottom, transparent 0%, rgba(255,215,0,0.25) 40%, rgba(255,215,0,0.25) 60%, transparent 100%)',
+        }}
+      />
+
+      {/* Subtle horizontal rules */}
+      {[12, 38, 64, 87].map((t, i) => (
+        <div key={i} style={{
+          position: 'absolute', left: 0, right: 0, top: `${t}%`, height: 1,
+          background: `rgba(255,215,0,${0.018 + i * 0.008})`,
+        }} />
+      ))}
+
+      {/* Corner decoration — top left */}
+      <div style={{ position: 'absolute', top: 16, left: 16, width: 40, height: 40, borderTop: '1.5px solid rgba(255,215,0,0.25)', borderLeft: '1.5px solid rgba(255,215,0,0.25)' }} />
+      {/* Corner decoration — bottom right */}
+      <div style={{ position: 'absolute', bottom: 16, right: 16, width: 40, height: 40, borderBottom: '1.5px solid rgba(255,215,0,0.25)', borderRight: '1.5px solid rgba(255,215,0,0.25)' }} />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════
+   Hero section
+═══════════════════════════════════════ */
 function Hero() {
   const [startTyping, setStartTyping] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setStartTyping(true), 600);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setStartTyping(true), 600);
+    return () => clearTimeout(t);
   }, []);
 
   const [text] = useTypewriter({
     words: startTyping ? ['Full Stack Developer', 'React Developer', 'NodeJS Developer'] : [''],
-    loop: true,
-    typeSpeed: 80,
-    deleteSpeed: 40,
-    delaySpeed: 2000,
+    loop: true, typeSpeed: 80, deleteSpeed: 40, delaySpeed: 2000,
   });
 
   return (
-    <div className="pb-4 lg:mb-20" style={{ borderBottom: '1px solid rgba(255,215,0,0.1)' }}>
-      <div className="flex flex-wrap justify-between items-center">
+    <div className="pb-4 lg:mb-20" style={{ borderBottom: '1px solid rgba(255,215,0,0.1)', position: 'relative' }}>
+      <HeroBG />
 
-        {/* Left — text */}
+      <div className="flex flex-wrap justify-between items-center" style={{ position: 'relative', zIndex: 1 }}>
+
+        {/* ── Left — text ── */}
         <div className="w-full lg:w-1/2">
           <div className="flex flex-col items-center lg:items-start">
 
-            {/* Glitch name */}
             <motion.div
-              initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.7 }}
-              className="pb-6 lg:mt-16"
+              initial={{ x: -80, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.7 }} className="pb-6 lg:mt-16"
             >
               <h1
                 className="glitch-wrapper text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight font-mono"
@@ -243,23 +527,17 @@ function Hero() {
               </h1>
             </motion.div>
 
-            {/* Typewriter */}
             <motion.div
-              initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -80, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.3 }}
               className="mb-6 font-mono text-base sm:text-xl lg:text-2xl tracking-widest"
               style={{ color: 'rgba(255,215,0,0.75)' }}
             >
-              <span>&gt; </span>
-              <span>{text}</span>
-              <Cursor cursorColor="#FFD700" />
+              <span>&gt; </span><span>{text}</span><Cursor cursorColor="#FFD700" />
             </motion.div>
 
-            {/* Description */}
             <motion.p
-              initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -80, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.6 }}
               className="max-w-xl py-4 font-light tracking-wide leading-relaxed text-sm"
               style={{ color: 'rgba(200,200,200,0.7)', borderLeft: '2px solid rgba(255,215,0,0.3)', paddingLeft: '1rem' }}
@@ -267,10 +545,8 @@ function Hero() {
               {HERO_CONTENT}
             </motion.p>
 
-            {/* CTA buttons */}
             <motion.div
-              initial={{ x: -80, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: -80, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.9 }}
               className="flex gap-4 mt-6"
             >
@@ -278,33 +554,21 @@ function Hero() {
                 href="#best-projects"
                 onClick={e => { e.preventDefault(); document.getElementById('best-projects')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="px-6 py-2 font-mono text-sm tracking-widest transition-all duration-300"
-                style={{
-                  border: '1px solid rgba(255,215,0,0.5)',
-                  color: '#FFD700',
-                  background: 'rgba(255,215,0,0.05)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(255,215,0,0.15)';
-                  e.currentTarget.style.boxShadow = '0 0 14px rgba(255,215,0,0.3)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(255,215,0,0.05)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                style={{ border: '1px solid rgba(255,215,0,0.5)', color: '#FFD700', background: 'rgba(255,215,0,0.05)' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,215,0,0.15)'; e.currentTarget.style.boxShadow = '0 0 14px rgba(255,215,0,0.3)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,215,0,0.05)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
                 [ VIEW PROJECTS ]
               </a>
             </motion.div>
-
           </div>
         </div>
 
-        {/* Right — 3D Laptop illustration */}
+        {/* ── Right — laptop with browser animation ── */}
         <div className="w-full lg:w-1/2 lg:p-8 mb-20 mt-12 lg:mt-0">
           <div className="flex justify-center items-center">
             <motion.div
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               style={{ perspective: 1000 }}
             >
