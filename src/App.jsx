@@ -8,7 +8,6 @@ import Projects from "./components/Projects.jsx";
 import ProjectsShowcase from "./components/ProjectsShowcase.jsx";
 import ProjectsScreen from "./components/ProjectsScreen.jsx";
 import BestProjects from "./components/BestProjects.jsx";
-import LiveSitePreview from "./components/LiveSitePreview.jsx";
 import ContactForm from "./components/ContactForm.jsx";
 import BackgroundFX from "./components/BackgroundFX.jsx";
 import Contact from "./components/Contact.jsx";
@@ -69,7 +68,6 @@ function App() {
         <BestProjects />
         <ProjectsScreen />
         <ProjectsShowcase />
-        <LiveSitePreview />
         <ContactForm />
         <Contact />
       </div>

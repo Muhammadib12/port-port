@@ -34,7 +34,7 @@ function useBrowserAnimation() {
     } else if (phase === 'loading') {
       t = setTimeout(() => setPhase('site'), 1300);
     } else if (phase === 'site') {
-      t = setTimeout(() => { setTypedChars(0); setPhase('idle'); }, 3200);
+      t = setTimeout(() => { setTypedChars(0); setPhase('idle'); }, 6000);
     }
     return () => clearTimeout(t);
   }, [phase, typedChars]);
@@ -120,57 +120,32 @@ function BrowserScreen({ phase, typedChars }) {
           {isSite ? (
             <motion.div
               key="site"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.45 }}
-              style={{ padding: '10px 12px', height: '100%', display: 'flex', flexDirection: 'column', gap: 7 }}
+              transition={{ duration: 0.5 }}
+              style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}
             >
-              {/* Fake navbar */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ width: 38, height: 5, background: '#FFD700', borderRadius: 2 }} />
-                <div style={{ display: 'flex', gap: 5 }}>
-                  {[28,24,32,26].map((w,i) => (
-                    <div key={i} style={{ width: w, height: 3, background: 'rgba(255,215,0,0.25)', borderRadius: 2 }} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Fake hero row */}
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flex: 1 }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ width: '85%', height: 8, background: '#FFD700', borderRadius: 2, marginBottom: 5 }} />
-                  <div style={{ width: '55%', height: 4, background: 'rgba(255,215,0,0.5)', borderRadius: 2, marginBottom: 5 }} />
-                  {[90, 75, 60].map((w,i) => (
-                    <div key={i} style={{ width: `${w}%`, height: 3, background: 'rgba(255,215,0,0.12)', borderRadius: 1, marginBottom: 3 }} />
-                  ))}
-                  <div style={{ marginTop: 6, width: 48, height: 14, background: 'rgba(255,215,0,0.12)', border: '1px solid rgba(255,215,0,0.3)', borderRadius: 2 }} />
-                </div>
-                {/* Laptop silhouette */}
-                <div style={{ width: 52, height: 38, border: '1.5px solid rgba(255,215,0,0.45)', borderRadius: 3, background: 'rgba(255,215,0,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <div style={{ width: 30, height: 20, border: '1px solid rgba(255,215,0,0.3)', borderRadius: 2, background: '#050505', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ width: 18, height: 2, background: 'rgba(255,215,0,0.4)', borderRadius: 1 }} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating badge that slides out from the screen */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 12 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5, type: 'spring', stiffness: 180 }}
+              {/* Live iframe — scaled to fit the small screen */}
+              <iframe
+                src="https://mohamad-ibrahem.com"
+                title="mohamad-ibrahem.com"
+                scrolling="no"
                 style={{
-                  alignSelf: 'flex-start',
-                  fontFamily: 'monospace', fontSize: '0.62rem', letterSpacing: '0.15em',
-                  color: '#FFD700', padding: '4px 10px',
-                  border: '1px solid rgba(255,215,0,0.4)',
-                  background: 'rgba(255,215,0,0.06)',
-                  textShadow: '0 0 10px rgba(255,215,0,0.5)',
-                  boxShadow: '0 0 14px rgba(255,215,0,0.12)',
+                  width: '200%',
+                  height: '200%',
+                  border: 'none',
+                  transform: 'scale(0.5)',
+                  transformOrigin: 'top left',
+                  pointerEvents: 'none',
+                  display: 'block',
                 }}
-              >
-                ★ FULL STACK DEVELOPER
-              </motion.div>
+              />
+              {/* Scanlines */}
+              <div style={{
+                position: 'absolute', inset: 0, pointerEvents: 'none',
+                backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.05) 3px,rgba(0,0,0,0.05) 4px)',
+              }} />
             </motion.div>
           ) : (
             <motion.div
