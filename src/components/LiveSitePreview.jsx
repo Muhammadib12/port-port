@@ -72,9 +72,9 @@ function DomainReveal({ phase }) {
       setChars(i);
       if (i >= DOMAIN.length) {
         clearInterval(t);
-        setTimeout(() => setShowCheck(true), 200);
+        setTimeout(() => setShowCheck(true), 80);
       }
-    }, 55);
+    }, 28);
     return () => clearInterval(t);
   }, [phase]);
 
