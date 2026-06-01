@@ -1,12 +1,12 @@
 import React from "react";
-import { FaLinkedin, FaGithub, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import { motion } from "framer-motion";
 
 const links = [
-  { href: "https://wa.me/972506567035", icon: <FaWhatsapp />, color: '#4ade80', label: 'WhatsApp' },
+  { href: "mailto:mohammadibra403@gmail.com", icon: <MdEmail />, color: '#f87171', label: 'Gmail' },
   { href: "https://www.linkedin.com/in/muhammad-ibrahem-0b22002a3/", icon: <FaLinkedin />, color: '#60a5fa', label: 'LinkedIn' },
   { href: "https://github.com/Muhammadib12", icon: <FaGithub />, color: '#e5e7eb', label: 'GitHub' },
-  { href: "https://www.instagram.com/muhammadibra403/profilecard/?igsh=YXRoNXg1ZXM3d3gz", icon: <FaInstagram />, color: '#fb923c', label: 'Instagram' },
 ];
 
 function Contact() {

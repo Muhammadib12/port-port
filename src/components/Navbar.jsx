@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MuhammadLogo from "../assets/MuhammadLogo.webp";
-import { FaLinkedin, FaGithub, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WORDS = ["M.Ibrahim", "Full Stack", "Developer", "React · Next", "Node · Mongo"];
@@ -101,9 +102,9 @@ function Navbar() {
       {/* Icons */}
       <div className="flex items-center gap-5 text-xl">
         {[
+          { href: "mailto:mohammadibra403@gmail.com", icon: <MdEmail />, color: '#f87171' },
           { href: "https://www.linkedin.com/in/muhammad-ibrahem-0b22002a3/", icon: <FaLinkedin />, color: '#60a5fa' },
           { href: "https://github.com/Muhammadib12", icon: <FaGithub />, color: '#e5e7eb' },
-          { href: "https://www.instagram.com/muhammadibra403/profilecard/?igsh=YXRoNXg1ZXM3d3gz", icon: <FaInstagram />, color: '#fb923c' },
         ].map(({ href, icon, color }, i) => (
           <motion.a
             key={i}
@@ -117,16 +118,6 @@ function Navbar() {
             {icon}
           </motion.a>
         ))}
-        <motion.a
-          href="https://wa.me/972506567035"
-          target="_blank"
-          rel="noreferrer"
-          whileHover={{ y: -3, scale: 1.2 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          style={{ color: '#4ade80' }}
-        >
-          <FaWhatsapp />
-        </motion.a>
       </div>
     </motion.nav>
   );
