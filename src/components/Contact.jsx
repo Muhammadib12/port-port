@@ -4,7 +4,7 @@ import { MdEmail } from "react-icons/md";
 import { motion } from "framer-motion";
 
 const links = [
-  { href: "mailto:mohammadibra403@gmail.com", icon: <MdEmail />, color: '#f87171', label: 'Gmail' },
+  { href: "mailto:mohamadibra403@gmail.com", icon: <MdEmail />, color: '#f87171', label: 'Gmail' },
   { href: "https://www.linkedin.com/in/muhammad-ibrahem-0b22002a3/", icon: <FaLinkedin />, color: '#60a5fa', label: 'LinkedIn' },
   { href: "https://github.com/Muhammadib12", icon: <FaGithub />, color: '#e5e7eb', label: 'GitHub' },
 ];
