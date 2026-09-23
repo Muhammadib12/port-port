@@ -34,7 +34,7 @@ const motionTokens = {
   ease: [0.22, 1, 0.36, 1],
   viewport: { once: true, amount: 0.22 },
   section: {
-    hidden: { opacity: 0, y: 34 },
+    hidden: { opacity: 1, y: 0 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
   },
   stagger: {
@@ -42,11 +42,11 @@ const motionTokens = {
     visible: { transition: { staggerChildren: 0.075, delayChildren: 0.06 } },
   },
   item: {
-    hidden: { opacity: 0, y: 18 },
+    hidden: { opacity: 1, y: 0 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] } },
   },
   image: {
-    hidden: { opacity: 0, scale: 1.04, clipPath: "inset(12% 0% 12% 0% round 24px)" },
+    hidden: { opacity: 1, scale: 1, clipPath: "inset(0% 0% 0% 0% round 24px)" },
     visible: { opacity: 1, scale: 1, clipPath: "inset(0% 0% 0% 0% round 24px)", transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
   },
 };
@@ -457,16 +457,15 @@ function ProjectModal({ copy, project, onClose }) {
 }
 
 function ProjectCard({ copy, project, index, onOpen }) {
-  const fromLeft = index % 2 === 0;
   return (
     <motion.article
       className={`project-card project-${project.accent}`}
-      initial={{ opacity: 0, x: fromLeft ? -34 : 34, y: 18 }}
+      initial={false}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={motionTokens.viewport}
       transition={{ duration: 0.65, ease: motionTokens.ease }}
     >
-      <motion.div className="project-media" variants={motionTokens.image} initial="hidden" whileInView="visible" viewport={motionTokens.viewport}>
+      <motion.div className="project-media" variants={motionTokens.image} initial={false} whileInView="visible" viewport={motionTokens.viewport}>
         <motion.img
           src={project.image}
           alt={`${project.name} product interface`}
@@ -569,7 +568,7 @@ function Experience({ copy }) {
       <div className="timeline" ref={ref}>
         <motion.div className="timeline-progress" style={{ scaleY: scrollYProgress }} />
         {copy.experience.map(([period, title, place, text]) => (
-          <motion.article key={`${period}-${title}`} className="timeline-item" variants={motionTokens.item} initial="hidden" whileInView="visible" viewport={motionTokens.viewport}>
+          <motion.article key={`${period}-${title}`} className="timeline-item" variants={motionTokens.item} initial={false} whileInView="visible" viewport={motionTokens.viewport}>
             <span>{period}</span>
             <div><h3>{title}</h3><strong>{place}</strong><p>{text}</p></div>
           </motion.article>
@@ -733,7 +732,7 @@ function Contact({ copy }) {
         </motion.div>
       </Stagger>
 
-      <motion.form className="contact-form" onSubmit={handleSubmit} noValidate variants={motionTokens.item} initial="hidden" whileInView="visible" viewport={motionTokens.viewport}>
+      <motion.form className="contact-form" onSubmit={handleSubmit} noValidate variants={motionTokens.item} initial={false} whileInView="visible" viewport={motionTokens.viewport}>
         <label>
           <span><User size={15} /> {copy.contact.name}</span>
           <input type="text" autoComplete="name" placeholder={copy.contact.placeholders.name} {...fieldProps("name")} />
