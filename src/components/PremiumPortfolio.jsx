@@ -60,35 +60,50 @@ function useScrolled() {
 
 /**
  * Fades content up once it enters the viewport. CSS transition + one shared
- * IntersectionObserver: always ends visible, and shows at once without IO.
+ * IntersectionObserver. "Seen" lives in React state, so a re-render (e.g. a
+ * row opening and changing its className) can never hide it again.
  */
+const revealCallbacks = new WeakMap();
 let revealObserver = null;
-function observeReveal(element) {
+function observeReveal(element, onSeen) {
   if (typeof IntersectionObserver === "undefined") {
-    element.classList.add("is-in");
+    onSeen();
     return () => {};
   }
   revealObserver ??= new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-in");
-          revealObserver.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) continue;
+        revealCallbacks.get(entry.target)?.();
+        revealCallbacks.delete(entry.target);
+        revealObserver.unobserve(entry.target);
       }
     },
     { rootMargin: "0px 0px -6% 0px", threshold: 0.01 },
   );
+  revealCallbacks.set(element, onSeen);
   revealObserver.observe(element);
-  return () => revealObserver?.unobserve(element);
+  return () => {
+    revealCallbacks.delete(element);
+    revealObserver?.unobserve(element);
+  };
 }
 
 function Reveal({ as = "div", delay = 0, className = "", style, children, ...props }) {
   const ref = useRef(null);
-  useEffect(() => (ref.current ? observeReveal(ref.current) : undefined), []);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    if (seen || !ref.current) return undefined;
+    return observeReveal(ref.current, () => setSeen(true));
+  }, [seen]);
   return createElement(
     as,
-    { ref, className: `reveal ${className}`, style: delay ? { ...style, transitionDelay: `${delay}s` } : style, ...props },
+    {
+      ref,
+      className: `reveal ${seen ? "is-in" : ""} ${className}`,
+      style: delay ? { ...style, transitionDelay: `${delay}s` } : style,
+      ...props,
+    },
     children,
   );
 }
